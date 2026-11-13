@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "text": "## Entregar propuesta para radicación",
+      "type": "text",
+      "id": "Text_formEntregarPropuesta_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Proceso",
+      "type": "textfield",
+      "id": "Field_numeroProceso",
+      "key": "numeroProceso",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Propuesta entregada",
+      "type": "checkbox",
+      "id": "Field_propuestaEntregada",
+      "key": "propuestaEntregada",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Márcalo para confirmar"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaEntrega",
+      "key": "fechaEntrega",
+      "layout": {
+        "row": "Row_3"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha de entrega",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "formEntregarPropuesta",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

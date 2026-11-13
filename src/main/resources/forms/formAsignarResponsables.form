@@ -1,0 +1,74 @@
+{
+  "components": [
+    {
+      "text": "## Asignar responsables y fechas internas",
+      "type": "text",
+      "id": "Text_formAsignarResponsables_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Responsable jurídico",
+      "type": "textfield",
+      "id": "Field_responsableJuridico",
+      "key": "responsableJuridico",
+      "layout": {
+        "row": "Row_1"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Coordinador de Asuntos Legales"
+    },
+    {
+      "label": "Responsable técnico",
+      "type": "textfield",
+      "id": "Field_responsableTecnico",
+      "key": "responsableTecnico",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Director de Proyectos"
+    },
+    {
+      "label": "Responsable financiero",
+      "type": "textfield",
+      "id": "Field_responsableFinanciero",
+      "key": "responsableFinanciero",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Contadora"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaEntregaInterna",
+      "key": "fechaEntregaInterna",
+      "layout": {
+        "row": "Row_4"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha de entrega interna",
+      "validate": {
+        "required": true
+      },
+      "description": "Cuándo debe entregar cada área"
+    }
+  ],
+  "type": "default",
+  "id": "formAsignarResponsables",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

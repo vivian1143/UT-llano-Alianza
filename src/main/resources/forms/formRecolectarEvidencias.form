@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "text": "## Recolectar evidencias y testimonios",
+      "type": "text",
+      "id": "Text_formRecolectarEvidencias_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Trabajador",
+      "type": "textfield",
+      "id": "Field_nombreTrabajador",
+      "key": "nombreTrabajador",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "¿Qué pasó?",
+      "type": "textarea",
+      "id": "Field_descripcionEvento",
+      "key": "descripcionEvento",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Evidencias",
+      "type": "textarea",
+      "id": "Field_evidencias",
+      "key": "evidencias",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Lo que se encontró en el lugar. Ej: Fotos del baño, el piso no tenía aviso"
+    },
+    {
+      "label": "Testimonios",
+      "type": "textarea",
+      "id": "Field_testimonios",
+      "key": "testimonios",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "description": "Opcional. Ej: La compañera dice que el piso estaba recién trapeado"
+    }
+  ],
+  "type": "default",
+  "id": "formRecolectarEvidencias",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

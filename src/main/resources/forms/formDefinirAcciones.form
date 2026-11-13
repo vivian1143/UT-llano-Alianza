@@ -1,0 +1,83 @@
+{
+  "components": [
+    {
+      "text": "## Definir acciones y registrarlas en SIG",
+      "type": "text",
+      "id": "Text_formDefinirAcciones_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Conclusiones de la investigación",
+      "type": "textarea",
+      "id": "Field_conclusionesInvestigacion",
+      "key": "conclusionesInvestigacion",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Recomendaciones de la ARL",
+      "type": "textarea",
+      "id": "Field_recomendacionesArl",
+      "key": "recomendacionesArl",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Acciones a tomar",
+      "type": "textarea",
+      "id": "Field_accionesCorrectivas",
+      "key": "accionesCorrectivas",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Qué se va a hacer para que no vuelva a pasar. Ej: Capacitar al personal y poner avisos de piso mojado"
+    },
+    {
+      "label": "Responsable",
+      "type": "textfield",
+      "id": "Field_responsableAcciones",
+      "key": "responsableAcciones",
+      "layout": {
+        "row": "Row_4"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Carlos Ruiz, supervisor de sede"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaLimiteAcciones",
+      "key": "fechaLimiteAcciones",
+      "layout": {
+        "row": "Row_5"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha límite",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "formDefinirAcciones",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

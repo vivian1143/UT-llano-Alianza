@@ -1,0 +1,71 @@
+{
+  "components": [
+    {
+      "text": "## Elaborar informe de investigación",
+      "type": "text",
+      "id": "Text_formInformeInvestigacion_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Causas inmediatas",
+      "type": "textarea",
+      "id": "Field_causasInmediatas",
+      "key": "causasInmediatas",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Causas básicas",
+      "type": "textarea",
+      "id": "Field_causasBasicas",
+      "key": "causasBasicas",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Conclusiones",
+      "type": "textarea",
+      "id": "Field_conclusionesInvestigacion",
+      "key": "conclusionesInvestigacion",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Por qué pasó y qué hay que mejorar, sin culpar a nadie. Ej: Faltó capacitación y señalización en el área"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaInforme",
+      "key": "fechaInforme",
+      "layout": {
+        "row": "Row_4"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha del informe",
+      "validate": {
+        "required": true
+      },
+      "description": "Máximo 15 días después del accidente"
+    }
+  ],
+  "type": "default",
+  "id": "formInformeInvestigacion",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

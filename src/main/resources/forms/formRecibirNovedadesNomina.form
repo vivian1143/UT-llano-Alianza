@@ -1,0 +1,45 @@
+{
+  "components": [
+    {
+      "text": "## Recibir novedades para nómina",
+      "type": "text",
+      "id": "Text_formRecibirNovedadesNomina_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Prefactura",
+      "type": "textarea",
+      "id": "Field_resumenPrefactura",
+      "key": "resumenPrefactura",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Novedades recibidas",
+      "type": "checkbox",
+      "id": "Field_novedadesRecibidas",
+      "key": "novedadesRecibidas",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Márcalo para confirmar"
+    }
+  ],
+  "type": "default",
+  "id": "formRecibirNovedadesNomina",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

@@ -1,0 +1,87 @@
+{
+  "components": [
+    {
+      "text": "## Asignar personal a turnos y sedes",
+      "type": "text",
+      "id": "Text_formAsignarPersonal_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Contrato",
+      "type": "textfield",
+      "id": "Field_proyecto",
+      "key": "proyecto",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Sede",
+      "type": "textfield",
+      "id": "Field_sede",
+      "key": "sede",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Turnos",
+      "type": "textarea",
+      "id": "Field_turnos",
+      "key": "turnos",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Personal que consiguió Gestión Humana",
+      "type": "textarea",
+      "id": "Field_personalAdicional",
+      "key": "personalAdicional",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Personal asignado",
+      "type": "textarea",
+      "id": "Field_personalAsignado",
+      "key": "personalAsignado",
+      "layout": {
+        "row": "Row_5",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Quién va en cada turno. Ej: Mañana: Ana, Luis, Marta"
+    },
+    {
+      "label": "Alcanza el personal",
+      "type": "checkbox",
+      "id": "Field_personalSuficiente",
+      "key": "personalSuficiente",
+      "layout": {
+        "row": "Row_6"
+      },
+      "description": "Si no lo marcas, se le pide personal a Gestión Humana"
+    }
+  ],
+  "type": "default",
+  "id": "formAsignarPersonal",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

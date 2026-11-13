@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_decisionReportesAccidente" name="Determinar reportes requeridos" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <decision id="decisionReportesAccidente" name="Determinar reportes requeridos" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_decisionReportesAccidente" hitPolicy="UNIQUE">
+      <input id="Input_1" label="Tipo de evento">
+        <inputExpression id="InputExpression_1" typeRef="string"><text>tipoEvento</text></inputExpression>
+      </input>
+      <input id="Input_2" label="Gravedad">
+        <inputExpression id="InputExpression_2" typeRef="string"><text>gravedad</text></inputExpression>
+      </input>
+      <output id="Output_1" label="Nivel de reporte" name="nivelReporte" typeRef="string" />
+      <rule id="Rule_1">
+        <description>Incidente: solo se investiga, no se reporta</description>
+        <inputEntry id="InputEntry_1_1"><text>"incidente"</text></inputEntry>
+        <inputEntry id="InputEntry_1_2"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_1"><text>"ninguno"</text></outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <description>Accidente leve: FURAT a ARL y EPS</description>
+        <inputEntry id="InputEntry_2_1"><text>"accidente"</text></inputEntry>
+        <inputEntry id="InputEntry_2_2"><text>"leve","no_aplica"</text></inputEntry>
+        <outputEntry id="OutputEntry_2"><text>"arl"</text></outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <description>Grave o mortal: ARL, EPS, Ministerio del Trabajo y remitir investigación a la ARL</description>
+        <inputEntry id="InputEntry_3_1"><text>"accidente"</text></inputEntry>
+        <inputEntry id="InputEntry_3_2"><text>"grave","mortal"</text></inputEntry>
+        <outputEntry id="OutputEntry_3"><text>"arlMinisterio"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI><dmndi:DMNDiagram id="DMNDiagram_1">
+    <dmndi:DMNShape id="DMNShape_decisionReportesAccidente" dmnElementRef="decisionReportesAccidente"><dc:Bounds height="80" width="180" x="160" y="100" /></dmndi:DMNShape>
+  </dmndi:DMNDiagram></dmndi:DMNDI>
+</definitions>

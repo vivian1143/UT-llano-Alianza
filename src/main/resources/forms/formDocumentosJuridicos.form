@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Consolidar documentos jurídicos",
+      "type": "text",
+      "id": "Text_formDocumentosJuridicos_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Requisitos jurídicos",
+      "type": "textarea",
+      "id": "Field_requisitosJuridicos",
+      "key": "requisitosJuridicos",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Documentos jurídicos",
+      "type": "textarea",
+      "id": "Field_documentosJuridicos",
+      "key": "documentosJuridicos",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: RUT, certificado de existencia, antecedentes"
+    }
+  ],
+  "type": "default",
+  "id": "formDocumentosJuridicos",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

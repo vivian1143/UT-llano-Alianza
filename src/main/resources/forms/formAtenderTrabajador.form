@@ -1,0 +1,88 @@
+{
+  "components": [
+    {
+      "text": "## Atender al trabajador y asegurar el área",
+      "type": "text",
+      "id": "Text_formAtenderTrabajador_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Trabajador",
+      "type": "textfield",
+      "id": "Field_nombreTrabajador",
+      "key": "nombreTrabajador",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Sede",
+      "type": "textfield",
+      "id": "Field_sede",
+      "key": "sede",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Atención que recibió",
+      "values": [
+        {
+          "label": "Primeros auxilios en el sitio",
+          "value": "primeros_auxilios"
+        },
+        {
+          "label": "Lo llevaron al centro médico",
+          "value": "traslado"
+        },
+        {
+          "label": "No necesitó atención",
+          "value": "ninguna"
+        }
+      ],
+      "type": "select",
+      "id": "Field_atencionBrindada",
+      "key": "atencionBrindada",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Se señalizó el área",
+      "type": "checkbox",
+      "id": "Field_areaAsegurada",
+      "key": "areaAsegurada",
+      "layout": {
+        "row": "Row_4"
+      },
+      "description": "Seleccionar si se puso señalizacion en el lugar"
+    },
+    {
+      "label": "Observaciones",
+      "type": "textarea",
+      "id": "Field_observacionesAtencion",
+      "key": "observacionesAtencion",
+      "layout": {
+        "row": "Row_5",
+        "columns": null
+      },
+      "description": "Opcional. Ej: Se le aplicó hielo y se llevó a la clínica"
+    }
+  ],
+  "type": "default",
+  "id": "formAtenderTrabajador",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.52.0"
+  },
+  "schemaVersion": 19
+}

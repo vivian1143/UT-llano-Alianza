@@ -1,0 +1,93 @@
+{
+  "components": [
+    {
+      "text": "## Revisar requisitos del pliego",
+      "type": "text",
+      "id": "Text_formRevisarPliego_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Proceso",
+      "type": "textfield",
+      "id": "Field_numeroProceso",
+      "key": "numeroProceso",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Modalidad",
+      "type": "textfield",
+      "id": "Field_modalidadContratacion",
+      "key": "modalidadContratacion",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Entidad",
+      "type": "textfield",
+      "id": "Field_entidadContratante",
+      "key": "entidadContratante",
+      "layout": {
+        "row": "Row_3"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Requisitos jurídicos",
+      "type": "textarea",
+      "id": "Field_requisitosJuridicos",
+      "key": "requisitosJuridicos",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: RUT, certificado de existencia, antecedentes"
+    },
+    {
+      "label": "Requisitos técnicos",
+      "type": "textarea",
+      "id": "Field_requisitosTecnicos",
+      "key": "requisitosTecnicos",
+      "layout": {
+        "row": "Row_5",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 3 contratos parecidos, mínimo 10 operarios"
+    },
+    {
+      "label": "Requisitos financieros",
+      "type": "textarea",
+      "id": "Field_requisitosFinancieros",
+      "key": "requisitosFinancieros",
+      "layout": {
+        "row": "Row_6",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Liquidez mayor a 1,5"
+    }
+  ],
+  "type": "default",
+  "id": "formRevisarPliego",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

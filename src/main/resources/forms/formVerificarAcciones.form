@@ -1,0 +1,64 @@
+{
+  "components": [
+    {
+      "text": "## Verificar cierre de acciones",
+      "type": "text",
+      "id": "Text_formVerificarAcciones_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Acciones a tomar",
+      "type": "textarea",
+      "id": "Field_accionesCorrectivas",
+      "key": "accionesCorrectivas",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Evidencia de lo realizado",
+      "type": "textarea",
+      "id": "Field_evidenciaImplementacion",
+      "key": "evidenciaImplementacion",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Las acciones funcionaron",
+      "type": "checkbox",
+      "id": "Field_accionesEficaces",
+      "key": "accionesEficaces",
+      "layout": {
+        "row": "Row_3"
+      },
+      "description": "Si no se marca, se vuelven a implementar"
+    },
+    {
+      "label": "Observaciones",
+      "type": "textarea",
+      "id": "Field_observacionesVerificacion",
+      "key": "observacionesVerificacion",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "description": "Opcional"
+    }
+  ],
+  "type": "default",
+  "id": "formVerificarAcciones",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.52.0"
+  },
+  "schemaVersion": 19
+}

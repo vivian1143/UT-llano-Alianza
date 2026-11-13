@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Consolidar documentos técnicos",
+      "type": "text",
+      "id": "Text_formDocumentosTecnicos_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Requisitos técnicos",
+      "type": "textarea",
+      "id": "Field_requisitosTecnicos",
+      "key": "requisitosTecnicos",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Documentos técnicos",
+      "type": "textarea",
+      "id": "Field_documentosTecnicos",
+      "key": "documentosTecnicos",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Certificados de experiencia y hojas de vida"
+    }
+  ],
+  "type": "default",
+  "id": "formDocumentosTecnicos",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

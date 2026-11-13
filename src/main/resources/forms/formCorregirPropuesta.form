@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "text": "## Corregir con el área responsable",
+      "type": "text",
+      "id": "Text_formCorregirPropuesta_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Errores encontrados",
+      "type": "textarea",
+      "id": "Field_erroresEncontrados",
+      "key": "erroresEncontrados",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Observaciones de Gerencia",
+      "type": "textarea",
+      "id": "Field_observacionesGerencia",
+      "key": "observacionesGerencia",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Correcciones",
+      "type": "textarea",
+      "id": "Field_correccionesPropuesta",
+      "key": "correccionesPropuesta",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Se corrigió el valor de la carta"
+    }
+  ],
+  "type": "default",
+  "id": "formCorregirPropuesta",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

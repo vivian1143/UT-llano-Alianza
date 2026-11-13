@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Ajustar documentos según adenda",
+      "type": "text",
+      "id": "Text_formAjustarAdenda_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Adenda",
+      "type": "textarea",
+      "id": "Field_detalleAdenda",
+      "key": "detalleAdenda",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Ajustes hechos",
+      "type": "textarea",
+      "id": "Field_ajustesAdenda",
+      "key": "ajustesAdenda",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Se agregó otro certificado de experiencia"
+    }
+  ],
+  "type": "default",
+  "id": "formAjustarAdenda",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

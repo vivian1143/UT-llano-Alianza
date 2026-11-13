@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0" id="Definitions_GestionarPersonalAdicional" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Manual" exporterVersion="1.0">
+  <bpmn:collaboration id="Collaboration_GestionarPersonalAdicional">
+    <bpmn:participant id="Participant_main" name="UT Llano Alianza - Subproceso de Gestión Humana" processRef="procesoGestionarPersonalAdicional" />
+  </bpmn:collaboration>
+  <bpmn:process id="procesoGestionarPersonalAdicional" name="Gestionar Personal Adicional" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:laneSet id="LaneSet_GestionarPersonalAdicional">
+      <bpmn:lane id="Lane_0_Gestion_Humana" name="Gestión Humana">
+        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_revisar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwCand</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_solicitar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mrg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_vincular</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_end</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_start" name="Solicitud de personal adicional">
+      <bpmn:outgoing>Flow_1_start_revisar</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_revisar" name="Revisar banco de hojas de vida" camunda:formRef="formRevisarHojasVida" camunda:formRefBinding="latest" camunda:candidateGroups="gestionHumana">
+      <bpmn:incoming>Flow_1_start_revisar</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_revisar_gwCand</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwCand" name="¿Hay candidatos disponibles?">
+      <bpmn:incoming>Flow_2_revisar_gwCand</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_gwCand_mrg</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4_gwCand_solicitar</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_solicitar" name="Solicitar reclutamiento y selección" camunda:formRef="formSolicitarReclutamiento" camunda:formRefBinding="latest" camunda:candidateGroups="gestionHumana">
+      <bpmn:incoming>Flow_4_gwCand_solicitar</bpmn:incoming>
+      <bpmn:outgoing>Flow_5_solicitar_mrg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_mrg" name="">
+      <bpmn:incoming>Flow_3_gwCand_mrg</bpmn:incoming>
+      <bpmn:incoming>Flow_5_solicitar_mrg</bpmn:incoming>
+      <bpmn:outgoing>Flow_6_mrg_vincular</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_vincular" name="Vincular personal adicional" camunda:formRef="formVincularPersonal" camunda:formRefBinding="latest" camunda:candidateGroups="gestionHumana">
+      <bpmn:incoming>Flow_6_mrg_vincular</bpmn:incoming>
+      <bpmn:outgoing>Flow_7_vincular_end</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_end" name="Personal adicional vinculado">
+      <bpmn:incoming>Flow_7_vincular_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1_start_revisar" sourceRef="StartEvent_start" targetRef="Activity_revisar" />
+    <bpmn:sequenceFlow id="Flow_2_revisar_gwCand" sourceRef="Activity_revisar" targetRef="Gateway_gwCand" />
+    <bpmn:sequenceFlow id="Flow_3_gwCand_mrg" name="Sí" sourceRef="Gateway_gwCand" targetRef="Gateway_mrg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${candidatosDisponibles}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_4_gwCand_solicitar" name="No" sourceRef="Gateway_gwCand" targetRef="Activity_solicitar">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!candidatosDisponibles}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_5_solicitar_mrg" sourceRef="Activity_solicitar" targetRef="Gateway_mrg" />
+    <bpmn:sequenceFlow id="Flow_6_mrg_vincular" sourceRef="Gateway_mrg" targetRef="Activity_vincular" />
+    <bpmn:sequenceFlow id="Flow_7_vincular_end" sourceRef="Activity_vincular" targetRef="EndEvent_end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_GestionarPersonalAdicional"><bpmndi:BPMNPlane id="Plane_GestionarPersonalAdicional" bpmnElement="Collaboration_GestionarPersonalAdicional">
+    <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true"><dc:Bounds x="20" y="20" width="940" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_0_Gestion_Humana_di" bpmnElement="Lane_0_Gestion_Humana" isHorizontal="true"><dc:Bounds x="50" y="20" width="910" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start"><dc:Bounds x="122" y="62" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="82" y="101" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_revisar_di" bpmnElement="Activity_revisar"><dc:Bounds x="200" y="40" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwCand_di" bpmnElement="Gateway_gwCand" isMarkerVisible="true"><dc:Bounds x="365" y="55" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="332" y="26" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_solicitar_di" bpmnElement="Activity_solicitar"><dc:Bounds x="460" y="160" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mrg_di" bpmnElement="Gateway_mrg" isMarkerVisible="true"><dc:Bounds x="625" y="55" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_vincular_di" bpmnElement="Activity_vincular"><dc:Bounds x="720" y="40" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_end_di" bpmnElement="EndEvent_end"><dc:Bounds x="882" y="62" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="842" y="101" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="Flow_1_start_revisar_di" bpmnElement="Flow_1_start_revisar"><di:waypoint x="158" y="80" /><di:waypoint x="200" y="80" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_2_revisar_gwCand_di" bpmnElement="Flow_2_revisar_gwCand"><di:waypoint x="320" y="80" /><di:waypoint x="365" y="80" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_3_gwCand_mrg_di" bpmnElement="Flow_3_gwCand_mrg"><di:waypoint x="415" y="80" /><di:waypoint x="625" y="80" /><bpmndi:BPMNLabel><dc:Bounds x="421" y="64" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_4_gwCand_solicitar_di" bpmnElement="Flow_4_gwCand_solicitar"><di:waypoint x="390" y="105" /><di:waypoint x="390" y="200" /><di:waypoint x="460" y="200" /><bpmndi:BPMNLabel><dc:Bounds x="395" y="110" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_5_solicitar_mrg_di" bpmnElement="Flow_5_solicitar_mrg"><di:waypoint x="580" y="200" /><di:waypoint x="650" y="200" /><di:waypoint x="650" y="105" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_6_mrg_vincular_di" bpmnElement="Flow_6_mrg_vincular"><di:waypoint x="675" y="80" /><di:waypoint x="720" y="80" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_7_vincular_end_di" bpmnElement="Flow_7_vincular_end"><di:waypoint x="840" y="80" /><di:waypoint x="882" y="80" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

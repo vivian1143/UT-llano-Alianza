@@ -1,0 +1,69 @@
+{
+  "components": [
+    {
+      "text": "## Verificar consistencia de documentos",
+      "type": "text",
+      "id": "Text_formVerificarConsistencia_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Propuesta económica",
+      "type": "textarea",
+      "id": "Field_resumenEconomico",
+      "key": "resumenEconomico",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Factor de desempate",
+      "type": "textfield",
+      "id": "Field_factorDesempate",
+      "key": "factorDesempate",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "label": "La propuesta está completa",
+      "type": "checkbox",
+      "id": "Field_propuestaCompleta",
+      "key": "propuestaCompleta",
+      "layout": {
+        "row": "Row_3"
+      },
+      "description": "Si no lo marcas, se corrige con el área responsable"
+    },
+    {
+      "label": "Errores encontrados",
+      "type": "textarea",
+      "id": "Field_erroresEncontrados",
+      "key": "erroresEncontrados",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: El valor de la carta no coincide con la propuesta económica",
+      "conditional": {
+        "hide": "=propuestaCompleta = true"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "formVerificarConsistencia",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

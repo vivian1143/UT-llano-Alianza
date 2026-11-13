@@ -1,0 +1,58 @@
+{
+  "components": [
+    {
+      "text": "## Registrar respuesta del cliente",
+      "type": "text",
+      "id": "Text_formRespuestaCliente_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Personal asignado",
+      "type": "textarea",
+      "id": "Field_personalAsignado",
+      "key": "personalAsignado",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "El cliente pidió cambios",
+      "type": "checkbox",
+      "id": "Field_clientePideCambios",
+      "key": "clientePideCambios",
+      "layout": {
+        "row": "Row_2"
+      }
+    },
+    {
+      "label": "Cambios que pidió",
+      "type": "textarea",
+      "id": "Field_cambiosSolicitados",
+      "key": "cambiosSolicitados",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Una persona más los sábados",
+      "conditional": {
+        "hide": "=clientePideCambios != true"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "formRespuestaCliente",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

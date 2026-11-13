@@ -1,0 +1,99 @@
+{
+  "components": [
+    {
+      "text": "## Calcular costos en el simulador",
+      "type": "text",
+      "id": "Text_formCalcularCostos_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Requisitos financieros",
+      "type": "textarea",
+      "id": "Field_requisitosFinancieros",
+      "key": "requisitosFinancieros",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Número de operarios",
+      "type": "number",
+      "id": "Field_numeroOperarios",
+      "key": "numeroOperarios",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 12"
+    },
+    {
+      "label": "Salario por operario",
+      "type": "number",
+      "id": "Field_salarioBase",
+      "key": "salarioBase",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "En pesos, sin puntos. Ej: 1423500"
+    },
+    {
+      "label": "Factor prestacional",
+      "type": "number",
+      "id": "Field_factorPrestacional",
+      "key": "factorPrestacional",
+      "layout": {
+        "row": "Row_4"
+      },
+      "defaultValue": 0.52,
+      "validate": {
+        "required": true
+      },
+      "description": "Lo que suman prestaciones y seguridad social. Ej: 0.52"
+    },
+    {
+      "label": "Meses de contrato",
+      "type": "number",
+      "id": "Field_mesesContrato",
+      "key": "mesesContrato",
+      "layout": {
+        "row": "Row_5"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 10"
+    },
+    {
+      "label": "AIU (%)",
+      "type": "number",
+      "id": "Field_porcentajeAiu",
+      "key": "porcentajeAiu",
+      "layout": {
+        "row": "Row_6"
+      },
+      "defaultValue": 10,
+      "validate": {
+        "required": true
+      },
+      "description": "Administración, imprevistos y utilidad. Ej: 10"
+    }
+  ],
+  "type": "default",
+  "id": "formCalcularCostos",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

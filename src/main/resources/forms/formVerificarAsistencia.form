@@ -1,0 +1,130 @@
+{
+  "components": [
+    {
+      "text": "## Verificar asistencia diaria en sede",
+      "type": "text",
+      "id": "Text_formVerificarAsistencia_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Sede",
+      "type": "textfield",
+      "id": "Field_sede",
+      "key": "sede",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaVerificacion",
+      "key": "fechaVerificacion",
+      "layout": {
+        "row": "Row_2"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Hubo una novedad",
+      "type": "checkbox",
+      "id": "Field_huboNovedad",
+      "key": "huboNovedad",
+      "layout": {
+        "row": "Row_3"
+      },
+      "description": "Márcalo si alguien faltó, llegó tarde o hizo horas extra"
+    },
+    {
+      "label": "Trabajador",
+      "type": "textfield",
+      "id": "Field_trabajadorNovedad",
+      "key": "trabajadorNovedad",
+      "layout": {
+        "row": "Row_4"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Luis Martínez",
+      "conditional": {
+        "hide": "=huboNovedad != true"
+      }
+    },
+    {
+      "label": "Tipo de novedad",
+      "type": "select",
+      "id": "Field_tipoNovedad",
+      "key": "tipoNovedad",
+      "layout": {
+        "row": "Row_5"
+      },
+      "values": [
+        {
+          "label": "Falta",
+          "value": "falta"
+        },
+        {
+          "label": "Retardo",
+          "value": "retardo"
+        },
+        {
+          "label": "Horas extra",
+          "value": "horas_extra"
+        },
+        {
+          "label": "Incapacidad",
+          "value": "incapacidad"
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "description": "Con esto se decide si hace falta un reemplazo",
+      "conditional": {
+        "hide": "=huboNovedad != true"
+      }
+    },
+    {
+      "label": "Horas",
+      "type": "number",
+      "id": "Field_horasNovedad",
+      "key": "horasNovedad",
+      "layout": {
+        "row": "Row_6"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 8 si faltó todo el turno, 1 si llegó una hora tarde",
+      "conditional": {
+        "hide": "=huboNovedad != true"
+      }
+    },
+    {
+      "label": "Último día de la semana",
+      "type": "checkbox",
+      "id": "Field_finSemana",
+      "key": "finSemana",
+      "layout": {
+        "row": "Row_7"
+      },
+      "description": "Márcalo para pasar a la revisión semanal"
+    }
+  ],
+  "type": "default",
+  "id": "formVerificarAsistencia",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

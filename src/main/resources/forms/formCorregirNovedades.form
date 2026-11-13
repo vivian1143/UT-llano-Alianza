@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Corregir novedades",
+      "type": "text",
+      "id": "Text_formCorregirNovedades_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Errores a corregir",
+      "type": "textarea",
+      "id": "Field_inconsistencias",
+      "key": "inconsistencias",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Correcciones",
+      "type": "textarea",
+      "id": "Field_correccionesRealizadas",
+      "key": "correccionesRealizadas",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Se adjuntó la incapacidad de Luis"
+    }
+  ],
+  "type": "default",
+  "id": "formCorregirNovedades",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

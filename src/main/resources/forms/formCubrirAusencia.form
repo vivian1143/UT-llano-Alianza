@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "text": "## Cubrir ausencia con reemplazo",
+      "type": "text",
+      "id": "Text_formCubrirAusencia_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Trabajador que faltó",
+      "type": "textfield",
+      "id": "Field_trabajadorNovedad",
+      "key": "trabajadorNovedad",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Reemplazo",
+      "type": "textfield",
+      "id": "Field_trabajadorReemplazo",
+      "key": "trabajadorReemplazo",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Sofía Ramírez"
+    }
+  ],
+  "type": "default",
+  "id": "formCubrirAusencia",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

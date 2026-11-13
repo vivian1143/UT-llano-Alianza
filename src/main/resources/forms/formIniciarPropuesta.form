@@ -1,0 +1,111 @@
+{
+  "components": [
+    {
+      "text": "## Iniciar elaboración de propuesta",
+      "type": "text",
+      "id": "Text_formIniciarPropuesta_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Número del proceso",
+      "type": "textfield",
+      "id": "Field_numeroProceso",
+      "key": "numeroProceso",
+      "layout": {
+        "row": "Row_1"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: LP-012-2026"
+    },
+    {
+      "label": "Modalidad",
+      "type": "select",
+      "id": "Field_modalidadContratacion",
+      "key": "modalidadContratacion",
+      "layout": {
+        "row": "Row_2"
+      },
+      "values": [
+        {
+          "label": "Licitación pública",
+          "value": "Licitación pública"
+        },
+        {
+          "label": "Selección abreviada",
+          "value": "Selección abreviada"
+        },
+        {
+          "label": "Mínima cuantía",
+          "value": "Mínima cuantía"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Entidad",
+      "type": "textfield",
+      "id": "Field_entidadContratante",
+      "key": "entidadContratante",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Gobernación del Meta"
+    },
+    {
+      "label": "Objeto del contrato",
+      "type": "textarea",
+      "id": "Field_objetoContrato",
+      "key": "objetoContrato",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Servicio de aseo y cafetería para las sedes de la entidad"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaCierre",
+      "key": "fechaCierre",
+      "layout": {
+        "row": "Row_5"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha de cierre",
+      "validate": {
+        "required": true
+      },
+      "description": "Si pones la fecha de hoy, el temporizador cancela la aprobación"
+    },
+    {
+      "label": "Simular adenda",
+      "type": "checkbox",
+      "id": "Field_simularAdenda",
+      "key": "simularAdenda",
+      "layout": {
+        "row": "Row_6"
+      },
+      "description": "Es para pruebas, el worker devuelve una adenda"
+    }
+  ],
+  "type": "default",
+  "id": "formIniciarPropuesta",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "text": "## Registrar incapacidad como novedad",
+      "type": "text",
+      "id": "Text_formRegistrarIncapacidad_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Trabajador",
+      "type": "textfield",
+      "id": "Field_nombreTrabajador",
+      "key": "nombreTrabajador",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Cédula",
+      "type": "textfield",
+      "id": "Field_documentoTrabajador",
+      "key": "documentoTrabajador",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaInicioIncapacidad",
+      "key": "fechaInicioIncapacidad",
+      "layout": {
+        "row": "Row_3"
+      },
+      "subtype": "date",
+      "dateLabel": "Inicio de la incapacidad",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Incapacidad registrada en nómina",
+      "type": "checkbox",
+      "id": "Field_incapacidadRegistrada",
+      "key": "incapacidadRegistrada",
+      "layout": {
+        "row": "Row_4"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Márcalo para confirmar"
+    }
+  ],
+  "type": "default",
+  "id": "formRegistrarIncapacidad",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0" id="Definitions_Asistencia" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Manual" exporterVersion="1.0">
+  <bpmn:collaboration id="Collaboration_Asistencia">
+    <bpmn:participant id="Participant_main" name="UT Llano Alianza" processRef="procesoAsistenciaPersonal" />
+    <bpmn:participant id="Participant_cli" name="Cliente (entidad compradora)" />
+    <bpmn:participant id="Participant_per" name="Personal operativo" />
+    <bpmn:messageFlow id="MessageFlow_1" name="Turnos programados" sourceRef="Activity_comCli" targetRef="Participant_cli" />
+    <bpmn:messageFlow id="MessageFlow_2" name="Respuesta del cliente" sourceRef="Participant_cli" targetRef="Activity_resp" />
+    <bpmn:messageFlow id="MessageFlow_3" name="Turnos asignados" sourceRef="Event_comPer" targetRef="Participant_per" />
+    <bpmn:messageFlow id="MessageFlow_4" name="Aviso de ausencia" sourceRef="Participant_per" targetRef="Activity_verif" />
+  </bpmn:collaboration>
+  <bpmn:process id="procesoAsistenciaPersonal" name="Programar y Controlar Asistencia del Personal" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:laneSet id="LaneSet_Asistencia">
+      <bpmn:lane id="Lane_0_Coordinador_Operativo" name="Coordinador Operativo">
+        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_plan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_asignar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwPers</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_comCli</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_resp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwCamb</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_comPer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mB</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_audit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwInc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwMes</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_cerrar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_split</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1_Gestion_Humana" name="Gestión Humana">
+        <bpmn:flowNodeRef>Activity_gh</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_2_Supervisor_de_sede" name="Supervisor de sede">
+        <bpmn:flowNodeRef>Gateway_loop</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_verif</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwNov</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_reg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_dmnNov</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwRee</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_reem</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mrg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwSem</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_corr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_recordar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_endRec</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_bTimer</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_3_Analista_de_nomina" name="Analista de nómina">
+        <bpmn:flowNodeRef>Activity_nom</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_join</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_4_Area_de_facturacion" name="Área de facturación">
+        <bpmn:flowNodeRef>Activity_fac</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_start" name="Inicio de periodo mensual o acta de inicio">
+      <bpmn:outgoing>Flow_1_start_plan</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_plan" name="Definir plan mensual de trabajo por sede" camunda:formRef="formPlanMensual" camunda:formRefBinding="latest" camunda:candidateGroups="coordinador">
+      <bpmn:incoming>Flow_1_start_plan</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_plan_mA</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_mA" name="">
+      <bpmn:incoming>Flow_2_plan_mA</bpmn:incoming>
+      <bpmn:incoming>Flow_7_gh_mA</bpmn:incoming>
+      <bpmn:incoming>Flow_11_gwCamb_mA</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_mA_asignar</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_asignar" name="Asignar personal a turnos y sedes" camunda:formRef="formAsignarPersonal" camunda:formRefBinding="latest" camunda:candidateGroups="coordinador">
+      <bpmn:incoming>Flow_3_mA_asignar</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_asignar_gwPers</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwPers" name="¿Hay personal suficiente?">
+      <bpmn:incoming>Flow_4_asignar_gwPers</bpmn:incoming>
+      <bpmn:outgoing>Flow_5_gwPers_comCli</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6_gwPers_gh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:callActivity id="Activity_gh" name="Gestionar personal adicional" calledElement="procesoGestionarPersonalAdicional" camunda:calledElementBinding="latest">
+      <bpmn:extensionElements><camunda:in variables="all" /><camunda:out variables="all" /></bpmn:extensionElements>
+      <bpmn:incoming>Flow_6_gwPers_gh</bpmn:incoming>
+      <bpmn:outgoing>Flow_7_gh_mA</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sendTask id="Activity_comCli" name="Comunicar turnos al cliente" camunda:type="external" camunda:topic="comunicarTurnosCliente">
+      <bpmn:incoming>Flow_5_gwPers_comCli</bpmn:incoming>
+      <bpmn:outgoing>Flow_8_comCli_resp</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:userTask id="Activity_resp" name="Registrar respuesta del cliente" camunda:formRef="formRespuestaCliente" camunda:formRefBinding="latest" camunda:candidateGroups="coordinador">
+      <bpmn:incoming>Flow_8_comCli_resp</bpmn:incoming>
+      <bpmn:outgoing>Flow_9_resp_gwCamb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwCamb" name="¿Cliente pide cambios?">
+      <bpmn:incoming>Flow_9_resp_gwCamb</bpmn:incoming>
+      <bpmn:outgoing>Flow_10_gwCamb_comPer</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11_gwCamb_mA</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="Event_comPer" name="Turnos comunicados al personal">
+      <bpmn:incoming>Flow_10_gwCamb_comPer</bpmn:incoming>
+      <bpmn:outgoing>Flow_12_comPer_loop</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MED_comPer" messageRef="Message_turnosAsignados" camunda:type="external" camunda:topic="comunicarTurnosPersonal" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:exclusiveGateway id="Gateway_loop" name="">
+      <bpmn:incoming>Flow_12_comPer_loop</bpmn:incoming>
+      <bpmn:incoming>Flow_25_gwSem_loop</bpmn:incoming>
+      <bpmn:incoming>Flow_31_gwMes_loop</bpmn:incoming>
+      <bpmn:outgoing>Flow_13_loop_verif</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_verif" name="Verificar asistencia diaria en sede" camunda:formRef="formVerificarAsistencia" camunda:formRefBinding="latest" camunda:candidateGroups="supervisor">
+      <bpmn:incoming>Flow_13_loop_verif</bpmn:incoming>
+      <bpmn:outgoing>Flow_14_verif_gwNov</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwNov" name="¿Hay ausencia o novedad?">
+      <bpmn:incoming>Flow_14_verif_gwNov</bpmn:incoming>
+      <bpmn:outgoing>Flow_15_gwNov_reg</bpmn:outgoing>
+      <bpmn:outgoing>Flow_21_gwNov_mrg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_reg" name="Registrar novedad en APP o planilla" camunda:delegateExpression="${registrarNovedadDelegate}">
+      <bpmn:incoming>Flow_15_gwNov_reg</bpmn:incoming>
+      <bpmn:outgoing>Flow_16_reg_dmnNov</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DOA_reg_dapp"><bpmn:targetRef>Data_dapp</bpmn:targetRef></bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:businessRuleTask id="Activity_dmnNov" name="Evaluar novedad" camunda:resultVariable="accionNovedad" camunda:decisionRef="decisionEvaluarNovedad" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>Flow_16_reg_dmnNov</bpmn:incoming>
+      <bpmn:outgoing>Flow_17_dmnNov_gwRee</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_gwRee" name="¿Requiere reemplazo?">
+      <bpmn:incoming>Flow_17_dmnNov_gwRee</bpmn:incoming>
+      <bpmn:outgoing>Flow_18_gwRee_reem</bpmn:outgoing>
+      <bpmn:outgoing>Flow_19_gwRee_mrg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_reem" name="Cubrir ausencia con reemplazo" camunda:formRef="formCubrirAusencia" camunda:formRefBinding="latest" camunda:candidateGroups="supervisor">
+      <bpmn:incoming>Flow_18_gwRee_reem</bpmn:incoming>
+      <bpmn:outgoing>Flow_20_reem_mrg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_mrg" name="">
+      <bpmn:incoming>Flow_19_gwRee_mrg</bpmn:incoming>
+      <bpmn:incoming>Flow_20_reem_mrg</bpmn:incoming>
+      <bpmn:incoming>Flow_21_gwNov_mrg</bpmn:incoming>
+      <bpmn:outgoing>Flow_22_mrg_gwSem</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_gwSem" name="¿Terminó la semana?">
+      <bpmn:incoming>Flow_22_mrg_gwSem</bpmn:incoming>
+      <bpmn:outgoing>Flow_23_gwSem_mB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_25_gwSem_loop</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_mB" name="">
+      <bpmn:incoming>Flow_23_gwSem_mB</bpmn:incoming>
+      <bpmn:incoming>Flow_28_corr_mB</bpmn:incoming>
+      <bpmn:outgoing>Flow_24_mB_audit</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_audit" name="Auditar novedades semanales" camunda:formRef="formAuditarNovedades" camunda:formRefBinding="latest" camunda:candidateGroups="coordinador">
+      <bpmn:incoming>Flow_24_mB_audit</bpmn:incoming>
+      <bpmn:outgoing>Flow_26_audit_gwInc</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwInc" name="¿Hay inconsistencias?">
+      <bpmn:incoming>Flow_26_audit_gwInc</bpmn:incoming>
+      <bpmn:outgoing>Flow_27_gwInc_corr</bpmn:outgoing>
+      <bpmn:outgoing>Flow_29_gwInc_gwMes</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_corr" name="Corregir novedades" camunda:formRef="formCorregirNovedades" camunda:formRefBinding="latest" camunda:candidateGroups="supervisor">
+      <bpmn:incoming>Flow_27_gwInc_corr</bpmn:incoming>
+      <bpmn:outgoing>Flow_28_corr_mB</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwMes" name="¿Terminó el mes?">
+      <bpmn:incoming>Flow_29_gwInc_gwMes</bpmn:incoming>
+      <bpmn:outgoing>Flow_30_gwMes_cerrar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_31_gwMes_loop</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_cerrar" name="Cerrar prefactura mensual de novedades" camunda:delegateExpression="${cerrarPrefacturaDelegate}">
+      <bpmn:incoming>Flow_30_gwMes_cerrar</bpmn:incoming>
+      <bpmn:outgoing>Flow_32_cerrar_split</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DOA_cerrar_dpre"><bpmn:targetRef>Data_dpre</bpmn:targetRef></bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_split" name="">
+      <bpmn:incoming>Flow_32_cerrar_split</bpmn:incoming>
+      <bpmn:outgoing>Flow_33_split_nom</bpmn:outgoing>
+      <bpmn:outgoing>Flow_34_split_fac</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:userTask id="Activity_nom" name="Recibir novedades para nómina" camunda:formRef="formRecibirNovedadesNomina" camunda:formRefBinding="latest" camunda:candidateGroups="nomina">
+      <bpmn:incoming>Flow_33_split_nom</bpmn:incoming>
+      <bpmn:outgoing>Flow_35_nom_join</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_fac" name="Recibir soportes para facturar" camunda:formRef="formRecibirSoportesFacturacion" camunda:formRefBinding="latest" camunda:candidateGroups="facturacion">
+      <bpmn:incoming>Flow_34_split_fac</bpmn:incoming>
+      <bpmn:outgoing>Flow_36_fac_join</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_join" name="">
+      <bpmn:incoming>Flow_35_nom_join</bpmn:incoming>
+      <bpmn:incoming>Flow_36_fac_join</bpmn:incoming>
+      <bpmn:outgoing>Flow_37_join_end</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="EndEvent_end" name="Novedades del mes cerradas">
+      <bpmn:incoming>Flow_37_join_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="Activity_recordar" name="Recordar verificación al supervisor" camunda:type="external" camunda:topic="recordarVerificacionAsistencia">
+      <bpmn:incoming>Flow_38_bTimer_recordar</bpmn:incoming>
+      <bpmn:outgoing>Flow_39_recordar_endRec</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_endRec" name="Recordatorio enviado">
+      <bpmn:incoming>Flow_39_recordar_endRec</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_bTimer" name="1 hora sin verificar" cancelActivity="false" attachedToRef="Activity_verif">
+      <bpmn:outgoing>Flow_38_bTimer_recordar</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TED_bTimer"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1H</bpmn:timeDuration></bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1_start_plan" sourceRef="StartEvent_start" targetRef="Activity_plan" />
+    <bpmn:sequenceFlow id="Flow_2_plan_mA" sourceRef="Activity_plan" targetRef="Gateway_mA" />
+    <bpmn:sequenceFlow id="Flow_3_mA_asignar" sourceRef="Gateway_mA" targetRef="Activity_asignar" />
+    <bpmn:sequenceFlow id="Flow_4_asignar_gwPers" sourceRef="Activity_asignar" targetRef="Gateway_gwPers" />
+    <bpmn:sequenceFlow id="Flow_5_gwPers_comCli" name="Sí" sourceRef="Gateway_gwPers" targetRef="Activity_comCli">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${personalSuficiente}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_6_gwPers_gh" name="No" sourceRef="Gateway_gwPers" targetRef="Activity_gh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!personalSuficiente}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_7_gh_mA" sourceRef="Activity_gh" targetRef="Gateway_mA" />
+    <bpmn:sequenceFlow id="Flow_8_comCli_resp" sourceRef="Activity_comCli" targetRef="Activity_resp" />
+    <bpmn:sequenceFlow id="Flow_9_resp_gwCamb" sourceRef="Activity_resp" targetRef="Gateway_gwCamb" />
+    <bpmn:sequenceFlow id="Flow_10_gwCamb_comPer" name="No" sourceRef="Gateway_gwCamb" targetRef="Event_comPer">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!clientePideCambios}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_11_gwCamb_mA" name="Sí" sourceRef="Gateway_gwCamb" targetRef="Gateway_mA">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${clientePideCambios}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_12_comPer_loop" sourceRef="Event_comPer" targetRef="Gateway_loop" />
+    <bpmn:sequenceFlow id="Flow_13_loop_verif" sourceRef="Gateway_loop" targetRef="Activity_verif" />
+    <bpmn:sequenceFlow id="Flow_14_verif_gwNov" sourceRef="Activity_verif" targetRef="Gateway_gwNov" />
+    <bpmn:sequenceFlow id="Flow_15_gwNov_reg" name="Sí" sourceRef="Gateway_gwNov" targetRef="Activity_reg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${huboNovedad}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_16_reg_dmnNov" sourceRef="Activity_reg" targetRef="Activity_dmnNov" />
+    <bpmn:sequenceFlow id="Flow_17_dmnNov_gwRee" sourceRef="Activity_dmnNov" targetRef="Gateway_gwRee" />
+    <bpmn:sequenceFlow id="Flow_18_gwRee_reem" name="Sí" sourceRef="Gateway_gwRee" targetRef="Activity_reem">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accionNovedad == 'reemplazar'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_19_gwRee_mrg" name="No" sourceRef="Gateway_gwRee" targetRef="Gateway_mrg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accionNovedad == 'registrar'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_20_reem_mrg" sourceRef="Activity_reem" targetRef="Gateway_mrg" />
+    <bpmn:sequenceFlow id="Flow_21_gwNov_mrg" name="No" sourceRef="Gateway_gwNov" targetRef="Gateway_mrg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!huboNovedad}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_22_mrg_gwSem" sourceRef="Gateway_mrg" targetRef="Gateway_gwSem" />
+    <bpmn:sequenceFlow id="Flow_23_gwSem_mB" name="Sí" sourceRef="Gateway_gwSem" targetRef="Gateway_mB">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${finSemana}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_24_mB_audit" sourceRef="Gateway_mB" targetRef="Activity_audit" />
+    <bpmn:sequenceFlow id="Flow_25_gwSem_loop" name="No" sourceRef="Gateway_gwSem" targetRef="Gateway_loop">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!finSemana}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_26_audit_gwInc" sourceRef="Activity_audit" targetRef="Gateway_gwInc" />
+    <bpmn:sequenceFlow id="Flow_27_gwInc_corr" name="Sí" sourceRef="Gateway_gwInc" targetRef="Activity_corr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hayInconsistencias}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_28_corr_mB" sourceRef="Activity_corr" targetRef="Gateway_mB" />
+    <bpmn:sequenceFlow id="Flow_29_gwInc_gwMes" name="No" sourceRef="Gateway_gwInc" targetRef="Gateway_gwMes">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!hayInconsistencias}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_30_gwMes_cerrar" name="Sí" sourceRef="Gateway_gwMes" targetRef="Activity_cerrar">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${finMes}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_31_gwMes_loop" name="No" sourceRef="Gateway_gwMes" targetRef="Gateway_loop">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!finMes}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_32_cerrar_split" sourceRef="Activity_cerrar" targetRef="Gateway_split" />
+    <bpmn:sequenceFlow id="Flow_33_split_nom" sourceRef="Gateway_split" targetRef="Activity_nom" />
+    <bpmn:sequenceFlow id="Flow_34_split_fac" sourceRef="Gateway_split" targetRef="Activity_fac" />
+    <bpmn:sequenceFlow id="Flow_35_nom_join" sourceRef="Activity_nom" targetRef="Gateway_join" />
+    <bpmn:sequenceFlow id="Flow_36_fac_join" sourceRef="Activity_fac" targetRef="Gateway_join" />
+    <bpmn:sequenceFlow id="Flow_37_join_end" sourceRef="Gateway_join" targetRef="EndEvent_end" />
+    <bpmn:sequenceFlow id="Flow_38_bTimer_recordar" sourceRef="Event_bTimer" targetRef="Activity_recordar" />
+    <bpmn:sequenceFlow id="Flow_39_recordar_endRec" sourceRef="Activity_recordar" targetRef="EndEvent_endRec" />
+    <bpmn:dataStoreReference id="Data_dapp" name="APP de la empresa" />
+    <bpmn:dataObject id="DO_dpre" />
+    <bpmn:dataObjectReference id="Data_dpre" name="Prefactura de novedades" dataObjectRef="DO_dpre" />
+    <bpmn:textAnnotation id="TA_n1"><bpmn:text>Se repite cada día</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n1" sourceRef="Activity_verif" targetRef="TA_n1" />
+    <bpmn:textAnnotation id="TA_n2"><bpmn:text>Se repite cada semana</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n2" sourceRef="Activity_audit" targetRef="TA_n2" />
+  </bpmn:process>
+  <bpmn:message id="Message_turnosAsignados" name="turnosAsignados" />
+  <bpmndi:BPMNDiagram id="Diagram_Asistencia"><bpmndi:BPMNPlane id="Plane_Asistencia" bpmnElement="Collaboration_Asistencia">
+    <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true"><dc:Bounds x="20" y="110" width="3540" height="1080" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_0_Coordinador_Operativo_di" bpmnElement="Lane_0_Coordinador_Operativo" isHorizontal="true"><dc:Bounds x="50" y="110" width="3510" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_1_Gestion_Humana_di" bpmnElement="Lane_1_Gestion_Humana" isHorizontal="true"><dc:Bounds x="50" y="350" width="3510" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_2_Supervisor_de_sede_di" bpmnElement="Lane_2_Supervisor_de_sede" isHorizontal="true"><dc:Bounds x="50" y="470" width="3510" height="480" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_3_Analista_de_nomina_di" bpmnElement="Lane_3_Analista_de_nomina" isHorizontal="true"><dc:Bounds x="50" y="950" width="3510" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_4_Area_de_facturacion_di" bpmnElement="Lane_4_Area_de_facturacion" isHorizontal="true"><dc:Bounds x="50" y="1070" width="3510" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Participant_cli_di" bpmnElement="Participant_cli" isHorizontal="true"><dc:Bounds x="20" y="20" width="1160" height="60" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Participant_per_di" bpmnElement="Participant_per" isHorizontal="true"><dc:Bounds x="1180" y="20" width="2380" height="60" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start"><dc:Bounds x="122" y="272" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="82" y="311" width="116" height="39" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_plan_di" bpmnElement="Activity_plan"><dc:Bounds x="200" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mA_di" bpmnElement="Gateway_mA" isMarkerVisible="true"><dc:Bounds x="365" y="265" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_asignar_di" bpmnElement="Activity_asignar"><dc:Bounds x="460" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwPers_di" bpmnElement="Gateway_gwPers" isMarkerVisible="true"><dc:Bounds x="655" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="622" y="236" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_gh_di" bpmnElement="Activity_gh"><dc:Bounds x="620" y="370" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_comCli_di" bpmnElement="Activity_comCli"><dc:Bounds x="780" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_resp_di" bpmnElement="Activity_resp"><dc:Bounds x="940" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwCamb_di" bpmnElement="Gateway_gwCamb" isMarkerVisible="true"><dc:Bounds x="1105" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1072" y="318" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_comPer_di" bpmnElement="Event_comPer"><dc:Bounds x="1202" y="272" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1240" y="304" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_loop_di" bpmnElement="Gateway_loop" isMarkerVisible="true"><dc:Bounds x="1285" y="625" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_verif_di" bpmnElement="Activity_verif"><dc:Bounds x="1380" y="610" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwNov_di" bpmnElement="Gateway_gwNov" isMarkerVisible="true"><dc:Bounds x="1575" y="625" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1542" y="678" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_reg_di" bpmnElement="Activity_reg"><dc:Bounds x="1700" y="610" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_dmnNov_di" bpmnElement="Activity_dmnNov"><dc:Bounds x="1860" y="610" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwRee_di" bpmnElement="Gateway_gwRee" isMarkerVisible="true"><dc:Bounds x="2025" y="625" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1992" y="609" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_reem_di" bpmnElement="Activity_reem"><dc:Bounds x="2120" y="730" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mrg_di" bpmnElement="Gateway_mrg" isMarkerVisible="true"><dc:Bounds x="2285" y="625" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwSem_di" bpmnElement="Gateway_gwSem" isMarkerVisible="true"><dc:Bounds x="2385" y="625" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2428" y="614" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mB_di" bpmnElement="Gateway_mB" isMarkerVisible="true"><dc:Bounds x="2485" y="265" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_audit_di" bpmnElement="Activity_audit"><dc:Bounds x="2580" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwInc_di" bpmnElement="Gateway_gwInc" isMarkerVisible="true"><dc:Bounds x="2775" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2742" y="249" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_corr_di" bpmnElement="Activity_corr"><dc:Bounds x="2740" y="610" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwMes_di" bpmnElement="Gateway_gwMes" isMarkerVisible="true"><dc:Bounds x="2905" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2872" y="318" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_cerrar_di" bpmnElement="Activity_cerrar"><dc:Bounds x="3000" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_split_di" bpmnElement="Gateway_split"><dc:Bounds x="3155" y="265" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_nom_di" bpmnElement="Activity_nom"><dc:Bounds x="3240" y="970" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_fac_di" bpmnElement="Activity_fac"><dc:Bounds x="3240" y="1090" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_join_di" bpmnElement="Gateway_join"><dc:Bounds x="3395" y="985" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_end_di" bpmnElement="EndEvent_end"><dc:Bounds x="3482" y="992" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="3442" y="1031" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_recordar_di" bpmnElement="Activity_recordar"><dc:Bounds x="1540" y="850" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_endRec_di" bpmnElement="EndEvent_endRec"><dc:Bounds x="1742" y="872" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1702" y="911" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_bTimer_di" bpmnElement="Event_bTimer"><dc:Bounds x="1422" y="672" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1460" y="728" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dapp_di" bpmnElement="Data_dapp"><dc:Bounds x="1735" y="747" width="50" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1714" y="795" width="92" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dpre_di" bpmnElement="Data_dpre"><dc:Bounds x="3192" y="137" width="36" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="3164" y="185" width="92" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="TA_n1_di" bpmnElement="TA_n1"><dc:Bounds x="1385" y="519" width="110" height="23" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="TA_n2_di" bpmnElement="TA_n2"><dc:Bounds x="2585" y="152" width="110" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="Flow_1_start_plan_di" bpmnElement="Flow_1_start_plan"><di:waypoint x="158" y="290" /><di:waypoint x="200" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_2_plan_mA_di" bpmnElement="Flow_2_plan_mA"><di:waypoint x="320" y="290" /><di:waypoint x="365" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_3_mA_asignar_di" bpmnElement="Flow_3_mA_asignar"><di:waypoint x="415" y="290" /><di:waypoint x="460" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_4_asignar_gwPers_di" bpmnElement="Flow_4_asignar_gwPers"><di:waypoint x="580" y="290" /><di:waypoint x="655" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_5_gwPers_comCli_di" bpmnElement="Flow_5_gwPers_comCli"><di:waypoint x="705" y="290" /><di:waypoint x="780" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="711" y="274" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_6_gwPers_gh_di" bpmnElement="Flow_6_gwPers_gh"><di:waypoint x="680" y="315" /><di:waypoint x="680" y="370" /><bpmndi:BPMNLabel><dc:Bounds x="685" y="320" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_7_gh_mA_di" bpmnElement="Flow_7_gh_mA"><di:waypoint x="620" y="410" /><di:waypoint x="390" y="410" /><di:waypoint x="390" y="315" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_8_comCli_resp_di" bpmnElement="Flow_8_comCli_resp"><di:waypoint x="900" y="290" /><di:waypoint x="940" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_9_resp_gwCamb_di" bpmnElement="Flow_9_resp_gwCamb"><di:waypoint x="1060" y="290" /><di:waypoint x="1105" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_10_gwCamb_comPer_di" bpmnElement="Flow_10_gwCamb_comPer"><di:waypoint x="1155" y="290" /><di:waypoint x="1202" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="1161" y="274" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_11_gwCamb_mA_di" bpmnElement="Flow_11_gwCamb_mA"><di:waypoint x="1130" y="265" /><di:waypoint x="1130" y="220" /><di:waypoint x="390" y="220" /><di:waypoint x="390" y="265" /><bpmndi:BPMNLabel><dc:Bounds x="1135" y="247" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_12_comPer_loop_di" bpmnElement="Flow_12_comPer_loop"><di:waypoint x="1220" y="308" /><di:waypoint x="1220" y="650" /><di:waypoint x="1285" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_13_loop_verif_di" bpmnElement="Flow_13_loop_verif"><di:waypoint x="1335" y="650" /><di:waypoint x="1380" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_14_verif_gwNov_di" bpmnElement="Flow_14_verif_gwNov"><di:waypoint x="1500" y="650" /><di:waypoint x="1575" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_15_gwNov_reg_di" bpmnElement="Flow_15_gwNov_reg"><di:waypoint x="1625" y="650" /><di:waypoint x="1700" y="650" /><bpmndi:BPMNLabel><dc:Bounds x="1631" y="634" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_16_reg_dmnNov_di" bpmnElement="Flow_16_reg_dmnNov"><di:waypoint x="1820" y="650" /><di:waypoint x="1860" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_17_dmnNov_gwRee_di" bpmnElement="Flow_17_dmnNov_gwRee"><di:waypoint x="1980" y="650" /><di:waypoint x="2025" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_18_gwRee_reem_di" bpmnElement="Flow_18_gwRee_reem"><di:waypoint x="2050" y="675" /><di:waypoint x="2050" y="770" /><di:waypoint x="2120" y="770" /><bpmndi:BPMNLabel><dc:Bounds x="2055" y="680" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_19_gwRee_mrg_di" bpmnElement="Flow_19_gwRee_mrg"><di:waypoint x="2075" y="650" /><di:waypoint x="2285" y="650" /><bpmndi:BPMNLabel><dc:Bounds x="2081" y="634" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_20_reem_mrg_di" bpmnElement="Flow_20_reem_mrg"><di:waypoint x="2240" y="770" /><di:waypoint x="2310" y="770" /><di:waypoint x="2310" y="675" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_21_gwNov_mrg_di" bpmnElement="Flow_21_gwNov_mrg"><di:waypoint x="1600" y="625" /><di:waypoint x="1600" y="590" /><di:waypoint x="2310" y="590" /><di:waypoint x="2310" y="625" /><bpmndi:BPMNLabel><dc:Bounds x="1605" y="607" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_22_mrg_gwSem_di" bpmnElement="Flow_22_mrg_gwSem"><di:waypoint x="2335" y="650" /><di:waypoint x="2385" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_23_gwSem_mB_di" bpmnElement="Flow_23_gwSem_mB"><di:waypoint x="2410" y="625" /><di:waypoint x="2410" y="290" /><di:waypoint x="2485" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="2415" y="607" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_24_mB_audit_di" bpmnElement="Flow_24_mB_audit"><di:waypoint x="2535" y="290" /><di:waypoint x="2580" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_25_gwSem_loop_di" bpmnElement="Flow_25_gwSem_loop"><di:waypoint x="2410" y="675" /><di:waypoint x="2410" y="840" /><di:waypoint x="1310" y="840" /><di:waypoint x="1310" y="675" /><bpmndi:BPMNLabel><dc:Bounds x="2415" y="680" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_26_audit_gwInc_di" bpmnElement="Flow_26_audit_gwInc"><di:waypoint x="2700" y="290" /><di:waypoint x="2775" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_27_gwInc_corr_di" bpmnElement="Flow_27_gwInc_corr"><di:waypoint x="2800" y="315" /><di:waypoint x="2800" y="610" /><bpmndi:BPMNLabel><dc:Bounds x="2805" y="320" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_28_corr_mB_di" bpmnElement="Flow_28_corr_mB"><di:waypoint x="2740" y="650" /><di:waypoint x="2550" y="650" /><di:waypoint x="2550" y="330" /><di:waypoint x="2510" y="330" /><di:waypoint x="2510" y="315" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_29_gwInc_gwMes_di" bpmnElement="Flow_29_gwInc_gwMes"><di:waypoint x="2825" y="290" /><di:waypoint x="2905" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="2831" y="274" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_30_gwMes_cerrar_di" bpmnElement="Flow_30_gwMes_cerrar"><di:waypoint x="2955" y="290" /><di:waypoint x="3000" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="2961" y="274" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_31_gwMes_loop_di" bpmnElement="Flow_31_gwMes_loop"><di:waypoint x="2930" y="265" /><di:waypoint x="2930" y="230" /><di:waypoint x="1360" y="230" /><di:waypoint x="1360" y="610" /><di:waypoint x="1310" y="610" /><di:waypoint x="1310" y="625" /><bpmndi:BPMNLabel><dc:Bounds x="2935" y="247" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_32_cerrar_split_di" bpmnElement="Flow_32_cerrar_split"><di:waypoint x="3120" y="290" /><di:waypoint x="3155" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_33_split_nom_di" bpmnElement="Flow_33_split_nom"><di:waypoint x="3205" y="290" /><di:waypoint x="3220" y="290" /><di:waypoint x="3220" y="1010" /><di:waypoint x="3240" y="1010" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_34_split_fac_di" bpmnElement="Flow_34_split_fac"><di:waypoint x="3180" y="315" /><di:waypoint x="3180" y="1130" /><di:waypoint x="3240" y="1130" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_35_nom_join_di" bpmnElement="Flow_35_nom_join"><di:waypoint x="3360" y="1010" /><di:waypoint x="3395" y="1010" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_36_fac_join_di" bpmnElement="Flow_36_fac_join"><di:waypoint x="3360" y="1130" /><di:waypoint x="3420" y="1130" /><di:waypoint x="3420" y="1035" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_37_join_end_di" bpmnElement="Flow_37_join_end"><di:waypoint x="3445" y="1010" /><di:waypoint x="3482" y="1010" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_38_bTimer_recordar_di" bpmnElement="Flow_38_bTimer_recordar"><di:waypoint x="1440" y="708" /><di:waypoint x="1440" y="890" /><di:waypoint x="1540" y="890" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_39_recordar_endRec_di" bpmnElement="Flow_39_recordar_endRec"><di:waypoint x="1660" y="890" /><di:waypoint x="1742" y="890" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_1_di" bpmnElement="MessageFlow_1"><di:waypoint x="840" y="250" /><di:waypoint x="840" y="80" /><bpmndi:BPMNLabel><dc:Bounds x="846" y="86" width="101" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_2_di" bpmnElement="MessageFlow_2"><di:waypoint x="1000" y="80" /><di:waypoint x="1000" y="250" /><bpmndi:BPMNLabel><dc:Bounds x="1006" y="86" width="105" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_3_di" bpmnElement="MessageFlow_3"><di:waypoint x="1220" y="272" /><di:waypoint x="1220" y="80" /><bpmndi:BPMNLabel><dc:Bounds x="1226" y="86" width="87" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_4_di" bpmnElement="MessageFlow_4"><di:waypoint x="1440" y="80" /><di:waypoint x="1440" y="610" /><bpmndi:BPMNLabel><dc:Bounds x="1446" y="86" width="89" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DOA_reg_dapp_di" bpmnElement="DOA_reg_dapp"><di:waypoint x="1760" y="690" /><di:waypoint x="1760" y="747" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DOA_cerrar_dpre_di" bpmnElement="DOA_cerrar_dpre"><di:waypoint x="3106" y="250" /><di:waypoint x="3192" y="176" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Assoc_n1_di" bpmnElement="Assoc_n1"><di:waypoint x="1440" y="610" /><di:waypoint x="1440" y="542" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Assoc_n2_di" bpmnElement="Assoc_n2"><di:waypoint x="2640" y="250" /><di:waypoint x="2640" y="188" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

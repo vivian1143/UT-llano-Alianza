@@ -1,0 +1,96 @@
+{
+  "components": [
+    {
+      "text": "## Registrar y clasificar evento",
+      "type": "text",
+      "id": "Text_formClasificarEvento_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Trabajador",
+      "type": "textfield",
+      "id": "Field_nombreTrabajador",
+      "key": "nombreTrabajador",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "¿Qué pasó?",
+      "type": "textarea",
+      "id": "Field_descripcionEvento",
+      "key": "descripcionEvento",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Tipo de evento",
+      "type": "select",
+      "id": "Field_tipoEvento",
+      "key": "tipoEvento",
+      "layout": {
+        "row": "Row_3"
+      },
+      "values": [
+        {
+          "label": "Accidente de trabajo",
+          "value": "accidente"
+        },
+        {
+          "label": "Incidente (sin lesión)",
+          "value": "incidente"
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "description": "Accidente: hubo lesión. Incidente: no hubo lesión, pero pudo haberla"
+    },
+    {
+      "label": "Gravedad",
+      "type": "select",
+      "id": "Field_gravedad",
+      "key": "gravedad",
+      "layout": {
+        "row": "Row_4"
+      },
+      "values": [
+        {
+          "label": "Leve",
+          "value": "leve"
+        },
+        {
+          "label": "Grave",
+          "value": "grave"
+        },
+        {
+          "label": "Mortal",
+          "value": "mortal"
+        },
+        {
+          "label": "No aplica",
+          "value": "no_aplica"
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "description": "Si fue un incidente, elige No aplica"
+    }
+  ],
+  "type": "default",
+  "id": "formClasificarEvento",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

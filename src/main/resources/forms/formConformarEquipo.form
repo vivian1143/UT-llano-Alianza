@@ -1,0 +1,35 @@
+{
+  "components": [
+    {
+      "text": "## Conformar equipo investigador",
+      "type": "text",
+      "id": "Text_formConformarEquipo_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Equipo investigador",
+      "type": "textarea",
+      "id": "Field_miembrosEquipo",
+      "key": "miembrosEquipo",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Nombre y cargo de cada uno. Ej: Carlos Ruiz (jefe inmediato), Ana Gómez (COPASST), Laura Díaz (SST)"
+    }
+  ],
+  "type": "default",
+  "id": "formConformarEquipo",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

@@ -1,0 +1,69 @@
+{
+  "components": [
+    {
+      "text": "## Auditar novedades semanales",
+      "type": "text",
+      "id": "Text_formAuditarNovedades_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Novedades de la semana",
+      "type": "textarea",
+      "id": "Field_detalleNovedades",
+      "key": "detalleNovedades",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Hay errores en las novedades",
+      "type": "checkbox",
+      "id": "Field_hayInconsistencias",
+      "key": "hayInconsistencias",
+      "layout": {
+        "row": "Row_2"
+      },
+      "description": "Si lo marcas, el supervisor los corrige"
+    },
+    {
+      "label": "Errores encontrados",
+      "type": "textarea",
+      "id": "Field_inconsistencias",
+      "key": "inconsistencias",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Falta la incapacidad de Luis del día 12",
+      "conditional": {
+        "hide": "=hayInconsistencias != true"
+      }
+    },
+    {
+      "label": "Última semana del mes",
+      "type": "checkbox",
+      "id": "Field_finMes",
+      "key": "finMes",
+      "layout": {
+        "row": "Row_4"
+      },
+      "description": "Márcalo para cerrar la prefactura"
+    }
+  ],
+  "type": "default",
+  "id": "formAuditarNovedades",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

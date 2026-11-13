@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0" id="Definitions_Propuesta" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Manual" exporterVersion="1.0">
+  <bpmn:collaboration id="Collaboration_Propuesta">
+    <bpmn:participant id="Participant_main" name="UT Llano Alianza" processRef="procesoElaborarPropuesta" />
+    <bpmn:participant id="Participant_ent" name="Entidad estatal contratante (SECOP II)" />
+    <bpmn:messageFlow id="MessageFlow_1" name="Pliego de condiciones" sourceRef="Participant_ent" targetRef="Activity_revisar" />
+    <bpmn:messageFlow id="MessageFlow_2" name="Adendas" sourceRef="Participant_ent" targetRef="Activity_adendas" />
+  </bpmn:collaboration>
+  <bpmn:process id="procesoElaborarPropuesta" name="Elaborar Propuesta" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:laneSet id="LaneSet_Propuesta">
+      <bpmn:lane id="Lane_0_Coordinador_de_Asuntos_Legales_y_Contrac" name="Coordinador de Asuntos Legales y Contractuales">
+        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_revisar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_asignar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_jur</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_adendas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwAd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_ajAd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mrg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_desemp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_dmnDes</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_consist</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwOk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mrgC</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_corr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_entregar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1_Director_de_Proyectos" name="Director de Proyectos">
+        <bpmn:flowNodeRef>Gateway_split</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_tec</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_join</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_2_Area_financiera" name="Área financiera">
+        <bpmn:flowNodeRef>Activity_econ</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_3_Gerencia" name="Gerencia">
+        <bpmn:flowNodeRef>Activity_gerente</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_gwAp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_end2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_bCierre</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_start" name="Decisión de participar tomada" camunda:formRef="formIniciarPropuesta" camunda:formRefBinding="latest">
+      <bpmn:outgoing>Flow_1_start_revisar</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_revisar" name="Revisar requisitos del pliego" camunda:formRef="formRevisarPliego" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_1_start_revisar</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_revisar_asignar</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_asignar" name="Asignar responsables y fechas internas" camunda:formRef="formAsignarResponsables" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_2_revisar_asignar</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_asignar_split</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_split" name="">
+      <bpmn:incoming>Flow_3_asignar_split</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_split_jur</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5_split_tec</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6_split_econ</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:userTask id="Activity_jur" name="Consolidar documentos jurídicos" camunda:formRef="formDocumentosJuridicos" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_4_split_jur</bpmn:incoming>
+      <bpmn:outgoing>Flow_7_jur_join</bpmn:outgoing>
+      <bpmn:property id="Property_jur_0" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DIA_jur_dplt"><bpmn:sourceRef>Data_dplt</bpmn:sourceRef><bpmn:targetRef>Property_jur_0</bpmn:targetRef></bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_tec" name="Consolidar documentos técnicos" camunda:formRef="formDocumentosTecnicos" camunda:formRefBinding="latest" camunda:candidateGroups="proyectos">
+      <bpmn:incoming>Flow_5_split_tec</bpmn:incoming>
+      <bpmn:outgoing>Flow_8_tec_join</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:callActivity id="Activity_econ" name="Elaborar propuesta económica" calledElement="procesoElaborarPropuestaEconomica" camunda:calledElementBinding="latest">
+      <bpmn:extensionElements><camunda:in variables="all" /><camunda:out variables="all" /></bpmn:extensionElements>
+      <bpmn:incoming>Flow_6_split_econ</bpmn:incoming>
+      <bpmn:outgoing>Flow_9_econ_join</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:parallelGateway id="Gateway_join" name="">
+      <bpmn:incoming>Flow_7_jur_join</bpmn:incoming>
+      <bpmn:incoming>Flow_8_tec_join</bpmn:incoming>
+      <bpmn:incoming>Flow_9_econ_join</bpmn:incoming>
+      <bpmn:outgoing>Flow_10_join_adendas</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:serviceTask id="Activity_adendas" name="Consultar adendas en SECOP II" camunda:type="external" camunda:topic="consultarAdendasSecop">
+      <bpmn:incoming>Flow_10_join_adendas</bpmn:incoming>
+      <bpmn:outgoing>Flow_11_adendas_gwAd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_gwAd" name="¿Hay adendas que afecten?">
+      <bpmn:incoming>Flow_11_adendas_gwAd</bpmn:incoming>
+      <bpmn:outgoing>Flow_12_gwAd_ajAd</bpmn:outgoing>
+      <bpmn:outgoing>Flow_13_gwAd_mrg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_ajAd" name="Ajustar documentos según adenda" camunda:formRef="formAjustarAdenda" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_12_gwAd_ajAd</bpmn:incoming>
+      <bpmn:outgoing>Flow_14_ajAd_mrg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_mrg" name="">
+      <bpmn:incoming>Flow_13_gwAd_mrg</bpmn:incoming>
+      <bpmn:incoming>Flow_14_ajAd_mrg</bpmn:incoming>
+      <bpmn:incoming>Flow_21_corr_mrg</bpmn:incoming>
+      <bpmn:outgoing>Flow_15_mrg_desemp</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_desemp" name="Validar factores de desempate" camunda:formRef="formFactoresDesempate" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_15_mrg_desemp</bpmn:incoming>
+      <bpmn:outgoing>Flow_16_desemp_dmnDes</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:businessRuleTask id="Activity_dmnDes" name="Determinar factor de desempate" camunda:resultVariable="factorDesempate" camunda:decisionRef="decisionFactorDesempate" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>Flow_16_desemp_dmnDes</bpmn:incoming>
+      <bpmn:outgoing>Flow_17_dmnDes_consist</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:userTask id="Activity_consist" name="Verificar consistencia de documentos" camunda:formRef="formVerificarConsistencia" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_17_dmnDes_consist</bpmn:incoming>
+      <bpmn:outgoing>Flow_18_consist_gwOk</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DOA_consist_dprop"><bpmn:targetRef>Data_dprop</bpmn:targetRef></bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwOk" name="¿Completa y consistente?">
+      <bpmn:incoming>Flow_18_consist_gwOk</bpmn:incoming>
+      <bpmn:outgoing>Flow_19_gwOk_mrgC</bpmn:outgoing>
+      <bpmn:outgoing>Flow_22_gwOk_gerente</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_mrgC" name="">
+      <bpmn:incoming>Flow_19_gwOk_mrgC</bpmn:incoming>
+      <bpmn:incoming>Flow_26_gwAp_mrgC</bpmn:incoming>
+      <bpmn:outgoing>Flow_20_mrgC_corr</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_corr" name="Corregir con el área responsable" camunda:formRef="formCorregirPropuesta" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_20_mrgC_corr</bpmn:incoming>
+      <bpmn:outgoing>Flow_21_corr_mrg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_gerente" name="Revisar y aprobar propuesta" camunda:formRef="formAprobarPropuesta" camunda:formRefBinding="latest" camunda:candidateGroups="gerencia">
+      <bpmn:incoming>Flow_22_gwOk_gerente</bpmn:incoming>
+      <bpmn:outgoing>Flow_23_gerente_gwAp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_gwAp" name="¿Aprobada?">
+      <bpmn:incoming>Flow_23_gerente_gwAp</bpmn:incoming>
+      <bpmn:outgoing>Flow_24_gwAp_entregar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_26_gwAp_mrgC</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_entregar" name="Entregar propuesta para radicación" camunda:formRef="formEntregarPropuesta" camunda:formRefBinding="latest" camunda:candidateGroups="legal">
+      <bpmn:incoming>Flow_24_gwAp_entregar</bpmn:incoming>
+      <bpmn:outgoing>Flow_25_entregar_end</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_end" name="Propuesta enviada a radicación">
+      <bpmn:incoming>Flow_25_entregar_end</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MED_end" messageRef="Message_propuestaLista" camunda:type="external" camunda:topic="notificarRadicacion" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_end2" name="Propuesta no presentada">
+      <bpmn:incoming>Flow_27_bCierre_end2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_bCierre" name="Fecha de cierre alcanzada" cancelActivity="true" attachedToRef="Activity_gerente">
+      <bpmn:outgoing>Flow_27_bCierre_end2</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TED_bCierre"><bpmn:timeDate xsi:type="bpmn:tFormalExpression">${fechaCierre}</bpmn:timeDate></bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1_start_revisar" sourceRef="StartEvent_start" targetRef="Activity_revisar" />
+    <bpmn:sequenceFlow id="Flow_2_revisar_asignar" sourceRef="Activity_revisar" targetRef="Activity_asignar" />
+    <bpmn:sequenceFlow id="Flow_3_asignar_split" sourceRef="Activity_asignar" targetRef="Gateway_split" />
+    <bpmn:sequenceFlow id="Flow_4_split_jur" sourceRef="Gateway_split" targetRef="Activity_jur" />
+    <bpmn:sequenceFlow id="Flow_5_split_tec" sourceRef="Gateway_split" targetRef="Activity_tec" />
+    <bpmn:sequenceFlow id="Flow_6_split_econ" sourceRef="Gateway_split" targetRef="Activity_econ" />
+    <bpmn:sequenceFlow id="Flow_7_jur_join" sourceRef="Activity_jur" targetRef="Gateway_join" />
+    <bpmn:sequenceFlow id="Flow_8_tec_join" sourceRef="Activity_tec" targetRef="Gateway_join" />
+    <bpmn:sequenceFlow id="Flow_9_econ_join" sourceRef="Activity_econ" targetRef="Gateway_join" />
+    <bpmn:sequenceFlow id="Flow_10_join_adendas" sourceRef="Gateway_join" targetRef="Activity_adendas" />
+    <bpmn:sequenceFlow id="Flow_11_adendas_gwAd" sourceRef="Activity_adendas" targetRef="Gateway_gwAd" />
+    <bpmn:sequenceFlow id="Flow_12_gwAd_ajAd" name="Sí" sourceRef="Gateway_gwAd" targetRef="Activity_ajAd">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hayAdendas}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13_gwAd_mrg" name="No" sourceRef="Gateway_gwAd" targetRef="Gateway_mrg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!hayAdendas}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_14_ajAd_mrg" sourceRef="Activity_ajAd" targetRef="Gateway_mrg" />
+    <bpmn:sequenceFlow id="Flow_15_mrg_desemp" sourceRef="Gateway_mrg" targetRef="Activity_desemp" />
+    <bpmn:sequenceFlow id="Flow_16_desemp_dmnDes" sourceRef="Activity_desemp" targetRef="Activity_dmnDes" />
+    <bpmn:sequenceFlow id="Flow_17_dmnDes_consist" sourceRef="Activity_dmnDes" targetRef="Activity_consist" />
+    <bpmn:sequenceFlow id="Flow_18_consist_gwOk" sourceRef="Activity_consist" targetRef="Gateway_gwOk" />
+    <bpmn:sequenceFlow id="Flow_19_gwOk_mrgC" name="No" sourceRef="Gateway_gwOk" targetRef="Gateway_mrgC">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!propuestaCompleta}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_20_mrgC_corr" sourceRef="Gateway_mrgC" targetRef="Activity_corr" />
+    <bpmn:sequenceFlow id="Flow_21_corr_mrg" sourceRef="Activity_corr" targetRef="Gateway_mrg" />
+    <bpmn:sequenceFlow id="Flow_22_gwOk_gerente" name="Sí" sourceRef="Gateway_gwOk" targetRef="Activity_gerente">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${propuestaCompleta}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_23_gerente_gwAp" sourceRef="Activity_gerente" targetRef="Gateway_gwAp" />
+    <bpmn:sequenceFlow id="Flow_24_gwAp_entregar" name="Sí" sourceRef="Gateway_gwAp" targetRef="Activity_entregar">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${propuestaAprobada}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_25_entregar_end" sourceRef="Activity_entregar" targetRef="Event_end" />
+    <bpmn:sequenceFlow id="Flow_26_gwAp_mrgC" name="No" sourceRef="Gateway_gwAp" targetRef="Gateway_mrgC">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!propuestaAprobada}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_27_bCierre_end2" sourceRef="Event_bCierre" targetRef="EndEvent_end2" />
+    <bpmn:dataObject id="DO_dprop" />
+    <bpmn:dataObjectReference id="Data_dprop" name="Propuesta consolidada" dataObjectRef="DO_dprop" />
+    <bpmn:dataStoreReference id="Data_dplt" name="Plantillas de propuesta" />
+  </bpmn:process>
+  <bpmn:message id="Message_propuestaLista" name="propuestaLista" />
+  <bpmndi:BPMNDiagram id="Diagram_Propuesta"><bpmndi:BPMNPlane id="Plane_Propuesta" bpmnElement="Collaboration_Propuesta">
+    <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true"><dc:Bounds x="20" y="110" width="2420" height="840" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_0_Coordinador_de_Asuntos_Legales_y_Contrac_di" bpmnElement="Lane_0_Coordinador_de_Asuntos_Legales_y_Contrac" isHorizontal="true"><dc:Bounds x="50" y="110" width="2390" height="360" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_1_Director_de_Proyectos_di" bpmnElement="Lane_1_Director_de_Proyectos" isHorizontal="true"><dc:Bounds x="50" y="470" width="2390" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_2_Area_financiera_di" bpmnElement="Lane_2_Area_financiera" isHorizontal="true"><dc:Bounds x="50" y="590" width="2390" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_3_Gerencia_di" bpmnElement="Lane_3_Gerencia" isHorizontal="true"><dc:Bounds x="50" y="710" width="2390" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Participant_ent_di" bpmnElement="Participant_ent" isHorizontal="true"><dc:Bounds x="20" y="20" width="2420" height="60" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start"><dc:Bounds x="122" y="272" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="82" y="311" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_revisar_di" bpmnElement="Activity_revisar"><dc:Bounds x="200" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_asignar_di" bpmnElement="Activity_asignar"><dc:Bounds x="360" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_split_di" bpmnElement="Gateway_split"><dc:Bounds x="515" y="505" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_jur_di" bpmnElement="Activity_jur"><dc:Bounds x="600" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_tec_di" bpmnElement="Activity_tec"><dc:Bounds x="600" y="490" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_econ_di" bpmnElement="Activity_econ"><dc:Bounds x="600" y="610" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_join_di" bpmnElement="Gateway_join"><dc:Bounds x="755" y="505" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_adendas_di" bpmnElement="Activity_adendas"><dc:Bounds x="840" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwAd_di" bpmnElement="Gateway_gwAd" isMarkerVisible="true"><dc:Bounds x="1005" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="972" y="236" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_ajAd_di" bpmnElement="Activity_ajAd"><dc:Bounds x="1100" y="370" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mrg_di" bpmnElement="Gateway_mrg" isMarkerVisible="true"><dc:Bounds x="1265" y="265" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_desemp_di" bpmnElement="Activity_desemp"><dc:Bounds x="1360" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_dmnDes_di" bpmnElement="Activity_dmnDes"><dc:Bounds x="1520" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_consist_di" bpmnElement="Activity_consist"><dc:Bounds x="1680" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwOk_di" bpmnElement="Gateway_gwOk" isMarkerVisible="true"><dc:Bounds x="1845" y="265" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1812" y="318" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mrgC_di" bpmnElement="Gateway_mrgC" isMarkerVisible="true"><dc:Bounds x="1845" y="145" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_corr_di" bpmnElement="Activity_corr"><dc:Bounds x="1520" y="130" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_gerente_di" bpmnElement="Activity_gerente"><dc:Bounds x="1940" y="730" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwAp_di" bpmnElement="Gateway_gwAp" isMarkerVisible="true"><dc:Bounds x="2105" y="745" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2072" y="798" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_entregar_di" bpmnElement="Activity_entregar"><dc:Bounds x="2200" y="250" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_end_di" bpmnElement="Event_end"><dc:Bounds x="2362" y="272" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2322" y="311" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_end2_di" bpmnElement="EndEvent_end2"><dc:Bounds x="2112" y="872" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2072" y="911" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_bCierre_di" bpmnElement="Event_bCierre"><dc:Bounds x="1982" y="792" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2020" y="824" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dprop_di" bpmnElement="Data_dprop"><dc:Bounds x="1722" y="377" width="36" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1694" y="425" width="92" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dplt_di" bpmnElement="Data_dplt"><dc:Bounds x="775" y="147" width="50" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="754" y="195" width="92" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="Flow_1_start_revisar_di" bpmnElement="Flow_1_start_revisar"><di:waypoint x="158" y="290" /><di:waypoint x="200" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_2_revisar_asignar_di" bpmnElement="Flow_2_revisar_asignar"><di:waypoint x="320" y="290" /><di:waypoint x="360" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_3_asignar_split_di" bpmnElement="Flow_3_asignar_split"><di:waypoint x="420" y="330" /><di:waypoint x="420" y="530" /><di:waypoint x="515" y="530" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_4_split_jur_di" bpmnElement="Flow_4_split_jur"><di:waypoint x="540" y="505" /><di:waypoint x="540" y="290" /><di:waypoint x="600" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_5_split_tec_di" bpmnElement="Flow_5_split_tec"><di:waypoint x="565" y="530" /><di:waypoint x="600" y="530" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_6_split_econ_di" bpmnElement="Flow_6_split_econ"><di:waypoint x="540" y="555" /><di:waypoint x="540" y="650" /><di:waypoint x="600" y="650" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_7_jur_join_di" bpmnElement="Flow_7_jur_join"><di:waypoint x="720" y="290" /><di:waypoint x="780" y="290" /><di:waypoint x="780" y="505" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_8_tec_join_di" bpmnElement="Flow_8_tec_join"><di:waypoint x="720" y="530" /><di:waypoint x="755" y="530" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_9_econ_join_di" bpmnElement="Flow_9_econ_join"><di:waypoint x="720" y="650" /><di:waypoint x="780" y="650" /><di:waypoint x="780" y="555" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_10_join_adendas_di" bpmnElement="Flow_10_join_adendas"><di:waypoint x="805" y="530" /><di:waypoint x="900" y="530" /><di:waypoint x="900" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_11_adendas_gwAd_di" bpmnElement="Flow_11_adendas_gwAd"><di:waypoint x="960" y="290" /><di:waypoint x="1005" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_12_gwAd_ajAd_di" bpmnElement="Flow_12_gwAd_ajAd"><di:waypoint x="1030" y="315" /><di:waypoint x="1030" y="410" /><di:waypoint x="1100" y="410" /><bpmndi:BPMNLabel><dc:Bounds x="1035" y="320" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_13_gwAd_mrg_di" bpmnElement="Flow_13_gwAd_mrg"><di:waypoint x="1055" y="290" /><di:waypoint x="1265" y="290" /><bpmndi:BPMNLabel><dc:Bounds x="1061" y="274" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_14_ajAd_mrg_di" bpmnElement="Flow_14_ajAd_mrg"><di:waypoint x="1220" y="410" /><di:waypoint x="1290" y="410" /><di:waypoint x="1290" y="315" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_15_mrg_desemp_di" bpmnElement="Flow_15_mrg_desemp"><di:waypoint x="1315" y="290" /><di:waypoint x="1360" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_16_desemp_dmnDes_di" bpmnElement="Flow_16_desemp_dmnDes"><di:waypoint x="1480" y="290" /><di:waypoint x="1520" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_17_dmnDes_consist_di" bpmnElement="Flow_17_dmnDes_consist"><di:waypoint x="1640" y="290" /><di:waypoint x="1680" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_18_consist_gwOk_di" bpmnElement="Flow_18_consist_gwOk"><di:waypoint x="1800" y="290" /><di:waypoint x="1845" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_19_gwOk_mrgC_di" bpmnElement="Flow_19_gwOk_mrgC"><di:waypoint x="1870" y="265" /><di:waypoint x="1870" y="195" /><bpmndi:BPMNLabel><dc:Bounds x="1875" y="247" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_20_mrgC_corr_di" bpmnElement="Flow_20_mrgC_corr"><di:waypoint x="1845" y="170" /><di:waypoint x="1640" y="170" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_21_corr_mrg_di" bpmnElement="Flow_21_corr_mrg"><di:waypoint x="1520" y="170" /><di:waypoint x="1290" y="170" /><di:waypoint x="1290" y="265" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_22_gwOk_gerente_di" bpmnElement="Flow_22_gwOk_gerente"><di:waypoint x="1895" y="290" /><di:waypoint x="2000" y="290" /><di:waypoint x="2000" y="730" /><bpmndi:BPMNLabel><dc:Bounds x="1901" y="274" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_23_gerente_gwAp_di" bpmnElement="Flow_23_gerente_gwAp"><di:waypoint x="2060" y="770" /><di:waypoint x="2105" y="770" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_24_gwAp_entregar_di" bpmnElement="Flow_24_gwAp_entregar"><di:waypoint x="2155" y="770" /><di:waypoint x="2260" y="770" /><di:waypoint x="2260" y="330" /><bpmndi:BPMNLabel><dc:Bounds x="2161" y="754" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_25_entregar_end_di" bpmnElement="Flow_25_entregar_end"><di:waypoint x="2320" y="290" /><di:waypoint x="2362" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_26_gwAp_mrgC_di" bpmnElement="Flow_26_gwAp_mrgC"><di:waypoint x="2130" y="745" /><di:waypoint x="2130" y="170" /><di:waypoint x="1895" y="170" /><bpmndi:BPMNLabel><dc:Bounds x="2135" y="727" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_27_bCierre_end2_di" bpmnElement="Flow_27_bCierre_end2"><di:waypoint x="2000" y="828" /><di:waypoint x="2000" y="890" /><di:waypoint x="2112" y="890" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_1_di" bpmnElement="MessageFlow_1"><di:waypoint x="260" y="80" /><di:waypoint x="260" y="250" /><bpmndi:BPMNLabel><dc:Bounds x="266" y="86" width="107" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_2_di" bpmnElement="MessageFlow_2"><di:waypoint x="900" y="80" /><di:waypoint x="900" y="250" /><bpmndi:BPMNLabel><dc:Bounds x="906" y="86" width="43" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DOA_consist_dprop_di" bpmnElement="DOA_consist_dprop"><di:waypoint x="1740" y="330" /><di:waypoint x="1740" y="377" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DIA_jur_dplt_di" bpmnElement="DIA_jur_dplt"><di:waypoint x="775" y="191" /><di:waypoint x="707" y="250" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

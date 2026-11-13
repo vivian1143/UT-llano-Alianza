@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Implementar acciones correctivas",
+      "type": "text",
+      "id": "Text_formImplementarAcciones_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Acciones a tomar",
+      "type": "textarea",
+      "id": "Field_accionesCorrectivas",
+      "key": "accionesCorrectivas",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Evidencia de lo realizado",
+      "type": "textarea",
+      "id": "Field_evidenciaImplementacion",
+      "key": "evidenciaImplementacion",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Lista de asistencia a la capacitación y fotos de los avisos"
+    }
+  ],
+  "type": "default",
+  "id": "formImplementarAcciones",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

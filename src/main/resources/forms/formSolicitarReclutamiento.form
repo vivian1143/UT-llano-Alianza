@@ -1,0 +1,48 @@
+{
+  "components": [
+    {
+      "text": "## Solicitar reclutamiento y selección",
+      "type": "text",
+      "id": "Text_formSolicitarReclutamiento_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Perfil que se necesita",
+      "type": "textarea",
+      "id": "Field_perfilRequerido",
+      "key": "perfilRequerido",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Operario de aseo con 6 meses de experiencia"
+    },
+    {
+      "label": "Cuántas personas",
+      "type": "number",
+      "id": "Field_cantidadRequerida",
+      "key": "cantidadRequerida",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 2"
+    }
+  ],
+  "type": "default",
+  "id": "formSolicitarReclutamiento",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

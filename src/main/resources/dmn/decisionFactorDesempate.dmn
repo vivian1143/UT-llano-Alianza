@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_decisionFactorDesempate" name="Determinar factor de desempate" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <decision id="decisionFactorDesempate" name="Determinar factor de desempate" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_decisionFactorDesempate" hitPolicy="FIRST">
+      <input id="Input_1" label="Servicios nacionales">
+        <inputExpression id="InputExpression_1" typeRef="boolean"><text>serviciosNacionales</text></inputExpression>
+      </input>
+      <input id="Input_2" label="Personal en condición de discapacidad">
+        <inputExpression id="InputExpression_2" typeRef="boolean"><text>personalDiscapacidad</text></inputExpression>
+      </input>
+      <input id="Input_3" label="Es MIPYME">
+        <inputExpression id="InputExpression_3" typeRef="boolean"><text>esMipyme</text></inputExpression>
+      </input>
+      <output id="Output_1" label="Factor de desempate" name="factorDesempate" typeRef="string" />
+      <rule id="Rule_1">
+        <description>Se acredita primero el origen nacional</description>
+        <inputEntry id="InputEntry_1_1"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_1_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_1_3"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_1"><text>"Servicios de origen nacional"</text></outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <description>Si no aplica el anterior</description>
+        <inputEntry id="InputEntry_2_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_2_2"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_2_3"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_2"><text>"Personal en condición de discapacidad"</text></outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <description>Si no aplican los anteriores</description>
+        <inputEntry id="InputEntry_3_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_3_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_3_3"><text>true</text></inputEntry>
+        <outputEntry id="OutputEntry_3"><text>"Condición de MIPYME"</text></outputEntry>
+      </rule>
+      <rule id="Rule_4">
+        <description>Ningún factor</description>
+        <inputEntry id="InputEntry_4_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_4_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_4_3"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_4"><text>"Sin factor de desempate acreditado"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI><dmndi:DMNDiagram id="DMNDiagram_1">
+    <dmndi:DMNShape id="DMNShape_decisionFactorDesempate" dmnElementRef="decisionFactorDesempate"><dc:Bounds height="80" width="180" x="160" y="100" /></dmndi:DMNShape>
+  </dmndi:DMNDiagram></dmndi:DMNDI>
+</definitions>

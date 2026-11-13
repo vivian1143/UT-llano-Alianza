@@ -1,0 +1,46 @@
+{
+  "components": [
+    {
+      "text": "## Vincular personal adicional",
+      "type": "text",
+      "id": "Text_formVincularPersonal_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Candidatos",
+      "type": "textarea",
+      "id": "Field_candidatos",
+      "key": "candidatos",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Personal vinculado",
+      "type": "textarea",
+      "id": "Field_personalAdicional",
+      "key": "personalAdicional",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Nombre y cédula. Ej: Jorge Pérez, 1121456789"
+    }
+  ],
+  "type": "default",
+  "id": "formVincularPersonal",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

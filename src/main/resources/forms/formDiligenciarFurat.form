@@ -1,0 +1,86 @@
+{
+  "components": [
+    {
+      "text": "## Diligenciar FURAT",
+      "type": "text",
+      "id": "Text_formDiligenciarFurat_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Número del FURAT",
+      "type": "textfield",
+      "id": "Field_numeroFurat",
+      "key": "numeroFurat",
+      "layout": {
+        "row": "Row_1"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: FURAT-2026-015"
+    },
+    {
+      "type": "datetime",
+      "id": "Field_fechaFurat",
+      "key": "fechaFurat",
+      "layout": {
+        "row": "Row_2"
+      },
+      "subtype": "date",
+      "dateLabel": "Fecha del FURAT",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Parte del cuerpo afectada",
+      "type": "textfield",
+      "id": "Field_parteCuerpoAfectada",
+      "key": "parteCuerpoAfectada",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Tobillo derecho"
+    },
+    {
+      "label": "Tuvo incapacidad",
+      "type": "checkbox",
+      "id": "Field_generoIncapacidad",
+      "key": "generoIncapacidad",
+      "layout": {
+        "row": "Row_4"
+      },
+      "description": "Márcalo si el médico le dio días de incapacidad"
+    },
+    {
+      "label": "Días de incapacidad",
+      "type": "number",
+      "id": "Field_diasIncapacidad",
+      "key": "diasIncapacidad",
+      "layout": {
+        "row": "Row_5"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 5",
+      "conditional": {
+        "hide": "=generoIncapacidad != true"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "formDiligenciarFurat",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

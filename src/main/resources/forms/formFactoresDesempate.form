@@ -1,0 +1,59 @@
+{
+  "components": [
+    {
+      "text": "## Validar factores de desempate",
+      "type": "text",
+      "id": "Text_formFactoresDesempate_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Servicios de origen nacional",
+      "type": "checkbox",
+      "id": "Field_serviciosNacionales",
+      "key": "serviciosNacionales",
+      "layout": {
+        "row": "Row_1"
+      }
+    },
+    {
+      "label": "Tiene personal con discapacidad",
+      "type": "checkbox",
+      "id": "Field_personalDiscapacidad",
+      "key": "personalDiscapacidad",
+      "layout": {
+        "row": "Row_2"
+      }
+    },
+    {
+      "label": "Es MIPYME",
+      "type": "checkbox",
+      "id": "Field_esMipyme",
+      "key": "esMipyme",
+      "layout": {
+        "row": "Row_3"
+      }
+    },
+    {
+      "label": "Soportes",
+      "type": "textarea",
+      "id": "Field_soportesDesempate",
+      "key": "soportesDesempate",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "description": "Opcional. Ej: Certificado MIPYME"
+    }
+  ],
+  "type": "default",
+  "id": "formFactoresDesempate",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

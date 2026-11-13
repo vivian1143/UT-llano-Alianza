@@ -1,0 +1,87 @@
+{
+  "components": [
+    {
+      "text": "## Definir plan mensual de trabajo por sede",
+      "type": "text",
+      "id": "Text_formPlanMensual_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Contrato",
+      "type": "textfield",
+      "id": "Field_proyecto",
+      "key": "proyecto",
+      "layout": {
+        "row": "Row_1"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Aseo y cafetería Gobernación del Meta 2026"
+    },
+    {
+      "label": "Sede",
+      "type": "textfield",
+      "id": "Field_sede",
+      "key": "sede",
+      "layout": {
+        "row": "Row_2"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Sede principal Villavicencio"
+    },
+    {
+      "label": "Mes",
+      "type": "textfield",
+      "id": "Field_mesProgramacion",
+      "key": "mesProgramacion",
+      "layout": {
+        "row": "Row_3"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: Noviembre 2026"
+    },
+    {
+      "label": "Puestos que pide el contrato",
+      "type": "number",
+      "id": "Field_puestosRequeridos",
+      "key": "puestosRequeridos",
+      "layout": {
+        "row": "Row_4"
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Ej: 12"
+    },
+    {
+      "label": "Turnos",
+      "type": "textarea",
+      "id": "Field_turnos",
+      "key": "turnos",
+      "layout": {
+        "row": "Row_5",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Horario y cuántas personas. Ej: Lunes a viernes 6:00-14:00 (8 personas)"
+    }
+  ],
+  "type": "default",
+  "id": "formPlanMensual",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

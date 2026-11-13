@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "text": "## Revisar concepto de ARL",
+      "type": "text",
+      "id": "Text_formRevisarConceptoArl_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Concepto de la ARL",
+      "type": "textarea",
+      "id": "Field_conceptoArl",
+      "key": "conceptoArl",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Recomendaciones de la ARL",
+      "type": "textarea",
+      "id": "Field_recomendacionesArl",
+      "key": "recomendacionesArl",
+      "layout": {
+        "row": "Row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Observaciones",
+      "type": "textarea",
+      "id": "Field_observacionesConcepto",
+      "key": "observacionesConcepto",
+      "layout": {
+        "row": "Row_3",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "description": "Qué se va a tener en cuenta del concepto. Ej: Se acogen las recomendaciones"
+    }
+  ],
+  "type": "default",
+  "id": "formRevisarConceptoArl",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

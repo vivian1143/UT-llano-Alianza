@@ -1,0 +1,93 @@
+{
+  "components": [
+    {
+      "text": "## Revisar y aprobar propuesta",
+      "type": "text",
+      "id": "Text_formAprobarPropuesta_titulo",
+      "layout": {
+        "row": "Row_0"
+      }
+    },
+    {
+      "label": "Proceso",
+      "type": "textfield",
+      "id": "Field_numeroProceso",
+      "key": "numeroProceso",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Modalidad",
+      "type": "textfield",
+      "id": "Field_modalidadContratacion",
+      "key": "modalidadContratacion",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Entidad",
+      "type": "textfield",
+      "id": "Field_entidadContratante",
+      "key": "entidadContratante",
+      "layout": {
+        "row": "Row_3"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Propuesta económica",
+      "type": "textarea",
+      "id": "Field_resumenEconomico",
+      "key": "resumenEconomico",
+      "layout": {
+        "row": "Row_4",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "label": "Factor de desempate",
+      "type": "textfield",
+      "id": "Field_factorDesempate",
+      "key": "factorDesempate",
+      "layout": {
+        "row": "Row_5"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Aprobar propuesta",
+      "type": "checkbox",
+      "id": "Field_propuestaAprobada",
+      "key": "propuestaAprobada",
+      "layout": {
+        "row": "Row_6"
+      },
+      "description": "Si no la apruebas, vuelve a corrección"
+    },
+    {
+      "label": "Observaciones",
+      "type": "textarea",
+      "id": "Field_observacionesGerencia",
+      "key": "observacionesGerencia",
+      "layout": {
+        "row": "Row_7",
+        "columns": null
+      },
+      "description": "Opcional"
+    }
+  ],
+  "type": "default",
+  "id": "formAprobarPropuesta",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.40.0"
+  },
+  "schemaVersion": 16
+}

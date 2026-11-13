@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0" id="Definitions_ElaborarPropuestaEconomica" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Manual" exporterVersion="1.0">
+  <bpmn:collaboration id="Collaboration_ElaborarPropuestaEconomica">
+    <bpmn:participant id="Participant_main" name="UT Llano Alianza - Subproceso financiero" processRef="procesoElaborarPropuestaEconomica" />
+  </bpmn:collaboration>
+  <bpmn:process id="procesoElaborarPropuestaEconomica" name="Elaborar Propuesta Económica" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:laneSet id="LaneSet_ElaborarPropuestaEconomica">
+      <bpmn:lane id="Lane_0_Area_financiera" name="Área financiera">
+        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_cost</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_econ</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_end</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_start" name="Propuesta económica solicitada">
+      <bpmn:outgoing>Flow_1_start_cost</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_cost" name="Calcular costos en el simulador" camunda:formRef="formCalcularCostos" camunda:formRefBinding="latest" camunda:candidateGroups="financiera">
+      <bpmn:incoming>Flow_1_start_cost</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_cost_econ</bpmn:outgoing>
+      <bpmn:property id="Property_cost_0" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DIA_cost_dsim"><bpmn:sourceRef>Data_dsim</bpmn:sourceRef><bpmn:targetRef>Property_cost_0</bpmn:targetRef></bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_econ" name="Formular propuesta económica" camunda:delegateExpression="${formularPropuestaEconomicaDelegate}">
+      <bpmn:incoming>Flow_2_cost_econ</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_econ_end</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_end" name="Propuesta económica formulada">
+      <bpmn:incoming>Flow_3_econ_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1_start_cost" sourceRef="StartEvent_start" targetRef="Activity_cost" />
+    <bpmn:sequenceFlow id="Flow_2_cost_econ" sourceRef="Activity_cost" targetRef="Activity_econ" />
+    <bpmn:sequenceFlow id="Flow_3_econ_end" sourceRef="Activity_econ" targetRef="EndEvent_end" />
+    <bpmn:dataStoreReference id="Data_dsim" name="Simulador de costos" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_ElaborarPropuestaEconomica"><bpmndi:BPMNPlane id="Plane_ElaborarPropuestaEconomica" bpmnElement="Collaboration_ElaborarPropuestaEconomica">
+    <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true"><dc:Bounds x="20" y="20" width="580" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_0_Area_financiera_di" bpmnElement="Lane_0_Area_financiera" isHorizontal="true"><dc:Bounds x="50" y="20" width="550" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start"><dc:Bounds x="122" y="182" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="82" y="221" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_cost_di" bpmnElement="Activity_cost"><dc:Bounds x="200" y="160" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_econ_di" bpmnElement="Activity_econ"><dc:Bounds x="360" y="160" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_end_di" bpmnElement="EndEvent_end"><dc:Bounds x="522" y="182" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="482" y="221" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dsim_di" bpmnElement="Data_dsim"><dc:Bounds x="355" y="67" width="50" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="334" y="115" width="92" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="Flow_1_start_cost_di" bpmnElement="Flow_1_start_cost"><di:waypoint x="158" y="200" /><di:waypoint x="200" y="200" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_2_cost_econ_di" bpmnElement="Flow_2_cost_econ"><di:waypoint x="320" y="200" /><di:waypoint x="360" y="200" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_3_econ_end_di" bpmnElement="Flow_3_econ_end"><di:waypoint x="480" y="200" /><di:waypoint x="522" y="200" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DIA_cost_dsim_di" bpmnElement="DIA_cost_dsim"><di:waypoint x="355" y="113" /><di:waypoint x="304" y="160" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

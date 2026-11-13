@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_decisionEvaluarNovedad" name="Evaluar novedad de asistencia" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <decision id="decisionEvaluarNovedad" name="Evaluar novedad de asistencia" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_decisionEvaluarNovedad" hitPolicy="UNIQUE">
+      <input id="Input_1" label="Tipo de novedad">
+        <inputExpression id="InputExpression_1" typeRef="string"><text>tipoNovedad</text></inputExpression>
+      </input>
+      <input id="Input_2" label="Horas afectadas">
+        <inputExpression id="InputExpression_2" typeRef="number"><text>horasNovedad</text></inputExpression>
+      </input>
+      <output id="Output_1" label="Acción" name="accionNovedad" typeRef="string" />
+      <rule id="Rule_1">
+        <description>Ausencia del turno completo: se cubre con reemplazo</description>
+        <inputEntry id="InputEntry_1_1"><text>"falta","incapacidad"</text></inputEntry>
+        <inputEntry id="InputEntry_1_2"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_1"><text>"reemplazar"</text></outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <description>Retardo de 2 horas o más: se cubre con reemplazo</description>
+        <inputEntry id="InputEntry_2_1"><text>"retardo"</text></inputEntry>
+        <inputEntry id="InputEntry_2_2"><text>&gt;= 2</text></inputEntry>
+        <outputEntry id="OutputEntry_2"><text>"reemplazar"</text></outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <description>Retardo menor a 2 horas: solo se registra</description>
+        <inputEntry id="InputEntry_3_1"><text>"retardo"</text></inputEntry>
+        <inputEntry id="InputEntry_3_2"><text>&lt; 2</text></inputEntry>
+        <outputEntry id="OutputEntry_3"><text>"registrar"</text></outputEntry>
+      </rule>
+      <rule id="Rule_4">
+        <description>Horas extra: solo se registra para nómina</description>
+        <inputEntry id="InputEntry_4_1"><text>"horas_extra"</text></inputEntry>
+        <inputEntry id="InputEntry_4_2"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_4"><text>"registrar"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI><dmndi:DMNDiagram id="DMNDiagram_1">
+    <dmndi:DMNShape id="DMNShape_decisionEvaluarNovedad" dmnElementRef="decisionEvaluarNovedad"><dc:Bounds height="80" width="180" x="160" y="100" /></dmndi:DMNShape>
+  </dmndi:DMNDiagram></dmndi:DMNDI>
+</definitions>
