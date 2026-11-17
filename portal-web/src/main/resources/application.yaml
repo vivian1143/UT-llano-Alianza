@@ -1,0 +1,7 @@
+# Portal de UT Llano Alianza: sistema externo que usa la API REST de Camunda
+server:
+  port: 8081
+
+# Dirección de la API REST de Camunda (el motor corre en el puerto 8080)
+camunda:
+  rest-url: http://localhost:8080/engine-rest
