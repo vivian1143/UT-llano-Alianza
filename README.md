@@ -97,10 +97,45 @@ Todos los archivos están en src/main/resources/ (carpetas bpmn/, dmn/ y forms/)
 
 ---
 
+# Cambios para la entrega final
+ 
+## Portal web
+**Responsable:** Laura Vanessa Hernandez Garcia
+ 
+El portal es una aplicación aparte (carpeta portal-web, puerto 8081) que se comunica con Camunda solo por su API REST.
+Cada actor entra con su usuario, ve solo sus actividades pendientes y completa sus formularios.
+El usuario demo es el administrador y es el único que puede cancelar procesos.
+ 
+**Usuarios** (la contraseña es igual al usuario)
+- Accidente: trabajador, supervisor, sst, investigador, nomina
+- Asistencia: coordinador, supervisor, gestionHumana, nomina, facturacion
+- Propuesta: legal, proyectos, financiera, gerencia
+- Administrador: demo
+## Corrección de la retroalimentación
+**Responsable:** Vivian Andrea Prado Zuleta
+ 
+En la entrega anterior algunas tareas usaban JavaDelegate y fallaban en Camunda Run.
+Se cambiaron por External Tasks que hacen los workers en JavaScript, así los procesos funcionan en Camunda Run y en Spring Boot.
+ 
+Cambios en los BPMN (src/main/resources/bpmn/)
+- accidenteTrabajo.bpmn: la tarea Actualizar matriz de riesgos ahora es External Task
+- asistenciaPersonal.bpmn: las tareas Registrar novedad y Cerrar prefactura ahora son External Task
+- elaborarPropuestaEconomica.bpmn: la tarea Formular propuesta económica ahora es External Task
+Cambios en los workers (workers-js/src)
+- accidente.js: se agregó el worker actualizarMatrizRiesgos
+- asistencia.js: se agregaron los workers registrarNovedad y cerrarPrefactura
+- propuesta.js: se agregó el worker formularPropuestaEconomica
+
+---
+
 # Cómo ejecutar
 1. En la raíz del proyecto (donde está el pom.xml): mvn spring-boot:run
-2. En otra terminal colocar cd workers-js para ir a la carpeta, luego npm install(si no esta instalado) y npm start(para que empiece a escuchar el puerto)
-3. Entrar a http://localhost:8080 con usuario demo y contraseña demo tambien, abrir Tasklist y dar Start process
-4. En nuestro repositorio se encuentra el documento ut llano alianza.pdf el cual contiene el recorrido de los procesos con su visualizacion en el Tasklist de camunda
+2. En otra terminal colocar cd workers-js para ir a la carpeta, luego npm install(si no esta instalado) y npm start(para que empiece a escuchar el puerto) deben aparecer 13 mensajes "subscribed to topic"
+3. Para el portal, en IntelliJ abrir portal-web/src/main/java/com/utllanoalianza/portal/PortalApplication.java, dar click derecho y Run 'PortalApplication'. Esperar a que diga que arrancó en el puerto 8081
+4. Entrar al portal en http://localhost:8081 con el usuario de cada rol (la contraseña es igual al usuario)
+5. ambién se puede entrar a http://localhost:8080 con usuario demo y contraseña demo, abrir Tasklist y dar Start process
+6. En nuestro repositorio se encuentra el documento ut llano alianza.pdf el cual contiene el recorrido de los procesos con su visualizacion en el Tasklist de camunda
 
 Los procesos Investigar Accidente, Gestionar Personal Adicional y Elaborar Propuesta Económica aparecen en la lista pero son subprocesos (Call Activity) entonces los llama el proceso principal y no se inician a mano
+
+**Ejecución en Camunda Run:** se despliegan las carpetas bpmn, dmn y forms y se inician los workers (paso 2)
