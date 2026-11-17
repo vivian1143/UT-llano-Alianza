@@ -27,6 +27,18 @@ module.exports = (client) => {
     await taskService.complete(task, vars);
   });
 
+  // Antes era un JavaDelegate. Registra la actualización de la matriz de riesgos.
+  client.subscribe("actualizarMatrizRiesgos", async ({ task, taskService }) => {
+    const v = task.variables;
+    const registro = `Sede ${v.get("sede")}: peligro actualizado por causas -> ${v.get("causasInmediatas")}. Se programa inspección de seguimiento.`;
+    console.log(`[actualizarMatrizRiesgos] ${registro}`);
+    const vars = new Variables();
+    vars.set("matrizActualizada", true);
+    vars.set("fechaActualizacionMatriz", new Date().toISOString().slice(0, 10));
+    vars.set("registroMatriz", registro);
+    await taskService.complete(task, vars);
+  });
+
   client.subscribe("remitirInvestigacionArl", async ({ task, taskService }) => {
     console.log(`[remitirInvestigacionArl] Informe remitido a la ARL (radicado ${task.variables.get("radicadoArl")})`);
     await taskService.complete(task, new Variables().set("investigacionRemitida", true));
