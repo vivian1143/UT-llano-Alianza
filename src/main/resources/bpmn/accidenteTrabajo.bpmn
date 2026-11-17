@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_Accidente" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0" id="Definitions_Accidente" targetNamespace="http://ut-llano-alianza/bpmn" exporter="Manual" exporterVersion="1.0">
   <bpmn:collaboration id="Collaboration_Accidente">
     <bpmn:participant id="Participant_main" name="UT Llano Alianza" processRef="procesoAccidenteTrabajo" />
     <bpmn:participant id="Participant_min" name="Ministerio del Trabajo (Dirección Territorial)" />
@@ -8,17 +8,25 @@
     <bpmn:messageFlow id="MessageFlow_2" name="FURAT" sourceRef="Activity_repARL" targetRef="Participant_arl" />
     <bpmn:messageFlow id="MessageFlow_3" name="Informe de investigación" sourceRef="Activity_remitir" targetRef="Participant_arl" />
     <bpmn:messageFlow id="MessageFlow_4" name="Concepto y recomendaciones" sourceRef="Participant_arl" targetRef="Event_concepto" />
-    <bpmn:textAnnotation id="TA_n1">
-      <bpmn:text>Plazo legal: 2 días hábiles desde el accidente</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_n1" sourceRef="Activity_repARL" targetRef="TA_n1" />
-    <bpmn:textAnnotation id="TA_n3">
-      <bpmn:text>Plazo legal: 15 días desde la ocurrencia</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_n3" sourceRef="Activity_investigar" targetRef="TA_n3" />
   </bpmn:collaboration>
   <bpmn:process id="procesoAccidenteTrabajo" name="Investigar y Reportar Accidente de Trabajo" isExecutable="true" camunda:historyTimeToLive="180">
     <bpmn:laneSet id="LaneSet_Accidente">
+      <bpmn:lane id="Lane_0_Trabajador_afectado_o_testigo" name="Trabajador afectado o testigo">
+        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_informar</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1_Jefe_inmediato_Supervisor_de_sede" name="Jefe inmediato / Supervisor de sede">
+        <bpmn:flowNodeRef>Activity_atender</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_notificar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_mC</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_implementar</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_2_Equipo_investigador" name="Equipo investigador">
+        <bpmn:flowNodeRef>Activity_investigar</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_3_Analista_de_nomina" name="Analista de nómina">
+        <bpmn:flowNodeRef>Activity_nomina</bpmn:flowNodeRef>
+      </bpmn:lane>
       <bpmn:lane id="Lane_4_Coordinador_SST" name="Coordinador SST">
         <bpmn:flowNodeRef>Activity_clasificar</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_dmnRep</bpmn:flowNodeRef>
@@ -45,22 +53,6 @@
         <bpmn:flowNodeRef>Gateway_gwEfic</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_matriz</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>EndEvent_end</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_3_Analista_de_nomina" name="Analista de nómina">
-        <bpmn:flowNodeRef>Activity_nomina</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_2_Equipo_investigador" name="Equipo investigador">
-        <bpmn:flowNodeRef>Activity_investigar</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_1_Jefe_inmediato_Supervisor_de_sede" name="Jefe inmediato / Supervisor de sede">
-        <bpmn:flowNodeRef>Activity_atender</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_notificar</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_mC</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_implementar</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_0_Trabajador_afectado_o_testigo" name="Trabajador afectado o testigo">
-        <bpmn:flowNodeRef>StartEvent_start</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_informar</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:startEvent id="StartEvent_start" name="Accidente o incidente ocurrido">
@@ -94,9 +86,7 @@
     <bpmn:userTask id="Activity_furat" name="Diligenciar FURAT" camunda:formRef="formDiligenciarFurat" camunda:formRefBinding="latest" camunda:candidateGroups="sst">
       <bpmn:incoming>Flow_7_gwAcc_furat</bpmn:incoming>
       <bpmn:outgoing>Flow_8_furat_gwGrave1</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DOA_furat_dfurat">
-        <bpmn:targetRef>Data_dfurat</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DOA_furat_dfurat"><bpmn:targetRef>Data_dfurat</bpmn:targetRef></bpmn:dataOutputAssociation>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_gwGrave1" name="¿Es grave o mortal?">
       <bpmn:incoming>Flow_8_furat_gwGrave1</bpmn:incoming>
@@ -139,11 +129,8 @@
       <bpmn:incoming>Flow_19_merge3_conformar</bpmn:incoming>
       <bpmn:outgoing>Flow_20_conformar_investigar</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:callActivity id="Activity_investigar" name="Investigar accidente" calledElement="procesoInvestigarAccidente">
-      <bpmn:extensionElements>
-        <camunda:in variables="all" />
-        <camunda:out variables="all" />
-      </bpmn:extensionElements>
+    <bpmn:callActivity id="Activity_investigar" name="Investigar accidente" calledElement="procesoInvestigarAccidente" camunda:calledElementBinding="latest">
+      <bpmn:extensionElements><camunda:in variables="all" /><camunda:out variables="all" /></bpmn:extensionElements>
       <bpmn:incoming>Flow_20_conformar_investigar</bpmn:incoming>
       <bpmn:outgoing>Flow_21_investigar_gwGrave2</bpmn:outgoing>
     </bpmn:callActivity>
@@ -169,9 +156,7 @@
     <bpmn:intermediateCatchEvent id="Event_sinResp" name="15 días sin respuesta">
       <bpmn:incoming>Flow_25_evgw_sinResp</bpmn:incoming>
       <bpmn:outgoing>Flow_29_sinResp_mergeA</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TED_sinResp">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P15D</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
+      <bpmn:timerEventDefinition id="TED_sinResp"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P15D</bpmn:timeDuration></bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:userTask id="Activity_revConcepto" name="Revisar concepto de ARL" camunda:formRef="formRevisarConceptoArl" camunda:formRefBinding="latest" camunda:candidateGroups="sst">
       <bpmn:incoming>Flow_27_concepto_revConcepto</bpmn:incoming>
@@ -190,9 +175,7 @@
     <bpmn:userTask id="Activity_definir" name="Definir acciones y registrarlas en SIG" camunda:formRef="formDefinirAcciones" camunda:formRefBinding="latest" camunda:candidateGroups="sst">
       <bpmn:incoming>Flow_31_merge4_definir</bpmn:incoming>
       <bpmn:outgoing>Flow_32_definir_mC</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DOA_definir_dsig">
-        <bpmn:targetRef>Data_dsig</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DOA_definir_dsig"><bpmn:targetRef>Data_dsig</bpmn:targetRef></bpmn:dataOutputAssociation>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_mC" name="">
       <bpmn:incoming>Flow_32_definir_mC</bpmn:incoming>
@@ -212,16 +195,13 @@
       <bpmn:outgoing>Flow_36_gwEfic_matriz</bpmn:outgoing>
       <bpmn:outgoing>Flow_37_gwEfic_mC</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_matriz" name="Actualizar matriz de riesgos e inspecciones" camunda:delegateExpression="${actualizarMatrizRiesgosDelegate}">
+    <bpmn:serviceTask id="Activity_matriz" name="Actualizar matriz de riesgos e inspecciones" camunda:type="external" camunda:topic="actualizarMatrizRiesgos">
       <bpmn:incoming>Flow_36_gwEfic_matriz</bpmn:incoming>
       <bpmn:outgoing>Flow_38_matriz_end</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="EndEvent_end" name="Caso investigado y cerrado">
       <bpmn:incoming>Flow_38_matriz_end</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:dataObjectReference id="Data_dfurat" name="FURAT" dataObjectRef="DO_dfurat" />
-    <bpmn:dataObject id="DO_dfurat" />
-    <bpmn:dataStoreReference id="Data_dsig" name="Sistema SIG" />
     <bpmn:sequenceFlow id="Flow_1_start_informar" sourceRef="StartEvent_start" targetRef="Activity_informar" />
     <bpmn:sequenceFlow id="Flow_2_informar_atender" sourceRef="Activity_informar" targetRef="Activity_atender" />
     <bpmn:sequenceFlow id="Flow_3_atender_notificar" sourceRef="Activity_atender" targetRef="Activity_notificar" />
@@ -230,9 +210,6 @@
     <bpmn:sequenceFlow id="Flow_6_dmnRep_gwAcc" sourceRef="Activity_dmnRep" targetRef="Gateway_gwAcc" />
     <bpmn:sequenceFlow id="Flow_7_gwAcc_furat" name="Sí" sourceRef="Gateway_gwAcc" targetRef="Activity_furat">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${nivelReporte != 'ninguno'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_18_gwAcc_merge3" name="No" sourceRef="Gateway_gwAcc" targetRef="Gateway_merge3">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${nivelReporte == 'ninguno'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_8_furat_gwGrave1" sourceRef="Activity_furat" targetRef="Gateway_gwGrave1" />
     <bpmn:sequenceFlow id="Flow_9_gwGrave1_repMin" name="Sí" sourceRef="Gateway_gwGrave1" targetRef="Activity_repMin">
@@ -252,6 +229,9 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_16_nomina_merge2" sourceRef="Activity_nomina" targetRef="Gateway_merge2" />
     <bpmn:sequenceFlow id="Flow_17_merge2_merge3" sourceRef="Gateway_merge2" targetRef="Gateway_merge3" />
+    <bpmn:sequenceFlow id="Flow_18_gwAcc_merge3" name="No" sourceRef="Gateway_gwAcc" targetRef="Gateway_merge3">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${nivelReporte == 'ninguno'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_19_merge3_conformar" sourceRef="Gateway_merge3" targetRef="Activity_conformar" />
     <bpmn:sequenceFlow id="Flow_20_conformar_investigar" sourceRef="Activity_conformar" targetRef="Activity_investigar" />
     <bpmn:sequenceFlow id="Flow_21_investigar_gwGrave2" sourceRef="Activity_investigar" targetRef="Gateway_gwGrave2" />
@@ -265,435 +245,121 @@
     <bpmn:sequenceFlow id="Flow_25_evgw_sinResp" sourceRef="Gateway_evgw" targetRef="Event_sinResp" />
     <bpmn:sequenceFlow id="Flow_26_evgw_concepto" sourceRef="Gateway_evgw" targetRef="Event_concepto" />
     <bpmn:sequenceFlow id="Flow_27_concepto_revConcepto" sourceRef="Event_concepto" targetRef="Activity_revConcepto" />
-    <bpmn:sequenceFlow id="Flow_29_sinResp_mergeA" sourceRef="Event_sinResp" targetRef="Gateway_mergeA" />
     <bpmn:sequenceFlow id="Flow_28_revConcepto_mergeA" sourceRef="Activity_revConcepto" targetRef="Gateway_mergeA" />
+    <bpmn:sequenceFlow id="Flow_29_sinResp_mergeA" sourceRef="Event_sinResp" targetRef="Gateway_mergeA" />
     <bpmn:sequenceFlow id="Flow_30_mergeA_merge4" sourceRef="Gateway_mergeA" targetRef="Gateway_merge4" />
     <bpmn:sequenceFlow id="Flow_31_merge4_definir" sourceRef="Gateway_merge4" targetRef="Activity_definir" />
     <bpmn:sequenceFlow id="Flow_32_definir_mC" sourceRef="Activity_definir" targetRef="Gateway_mC" />
-    <bpmn:sequenceFlow id="Flow_37_gwEfic_mC" name="No" sourceRef="Gateway_gwEfic" targetRef="Gateway_mC">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!accionesEficaces}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_33_mC_implementar" sourceRef="Gateway_mC" targetRef="Activity_implementar" />
     <bpmn:sequenceFlow id="Flow_34_implementar_verificar" sourceRef="Activity_implementar" targetRef="Activity_verificar" />
     <bpmn:sequenceFlow id="Flow_35_verificar_gwEfic" sourceRef="Activity_verificar" targetRef="Gateway_gwEfic" />
     <bpmn:sequenceFlow id="Flow_36_gwEfic_matriz" name="Sí" sourceRef="Gateway_gwEfic" targetRef="Activity_matriz">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accionesEficaces}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_37_gwEfic_mC" name="No" sourceRef="Gateway_gwEfic" targetRef="Gateway_mC">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!accionesEficaces}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_38_matriz_end" sourceRef="Activity_matriz" targetRef="EndEvent_end" />
+    <bpmn:dataObject id="DO_dfurat" />
+    <bpmn:dataObjectReference id="Data_dfurat" name="FURAT" dataObjectRef="DO_dfurat" />
+    <bpmn:dataStoreReference id="Data_dsig" name="Sistema SIG" />
+    <bpmn:textAnnotation id="TA_n1"><bpmn:text>Plazo legal: 2 días hábiles desde el accidente</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n1" sourceRef="Activity_repARL" targetRef="TA_n1" />
+    <bpmn:textAnnotation id="TA_n3"><bpmn:text>Plazo legal: 15 días desde la ocurrencia</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n3" sourceRef="Activity_investigar" targetRef="TA_n3" />
   </bpmn:process>
   <bpmn:message id="Message_conceptoArl" name="conceptoArl" />
-  <bpmndi:BPMNDiagram id="Diagram_Accidente">
-    <bpmndi:BPMNPlane id="Plane_Accidente" bpmnElement="Collaboration_Accidente">
-      <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="3700" height="960" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_4_Coordinador_SST_di" bpmnElement="Lane_4_Coordinador_SST" isHorizontal="true">
-        <dc:Bounds x="190" y="680" width="3670" height="360" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_3_Analista_de_nomina_di" bpmnElement="Lane_3_Analista_de_nomina" isHorizontal="true">
-        <dc:Bounds x="190" y="560" width="3670" height="120" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_2_Equipo_investigador_di" bpmnElement="Lane_2_Equipo_investigador" isHorizontal="true">
-        <dc:Bounds x="190" y="440" width="3670" height="120" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1_Jefe_inmediato_Supervisor_de_sede_di" bpmnElement="Lane_1_Jefe_inmediato_Supervisor_de_sede" isHorizontal="true">
-        <dc:Bounds x="190" y="200" width="3670" height="240" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0_Trabajador_afectado_o_testigo_di" bpmnElement="Lane_0_Trabajador_afectado_o_testigo" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="3670" height="120" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start">
-        <dc:Bounds x="262" y="122" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="228" y="161" width="105" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_informar_di" bpmnElement="Activity_informar">
-        <dc:Bounds x="340" y="100" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_atender_di" bpmnElement="Activity_atender">
-        <dc:Bounds x="340" y="340" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_notificar_di" bpmnElement="Activity_notificar">
-        <dc:Bounds x="500" y="340" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_clasificar_di" bpmnElement="Activity_clasificar">
-        <dc:Bounds x="500" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_dmnRep_di" bpmnElement="Activity_dmnRep">
-        <dc:Bounds x="660" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_gwAcc_di" bpmnElement="Gateway_gwAcc" isMarkerVisible="true">
-        <dc:Bounds x="825" y="715" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="808" y="768" width="85" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_furat_di" bpmnElement="Activity_furat">
-        <dc:Bounds x="920" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_gwGrave1_di" bpmnElement="Gateway_gwGrave1" isMarkerVisible="true">
-        <dc:Bounds x="1085" y="715" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1060" y="699" width="100" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_repMin_di" bpmnElement="Activity_repMin">
-        <dc:Bounds x="1180" y="820" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_merge1_di" bpmnElement="Gateway_merge1" isMarkerVisible="true">
-        <dc:Bounds x="1345" y="715" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_repARL_di" bpmnElement="Activity_repARL">
-        <dc:Bounds x="1440" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_gwInc_di" bpmnElement="Gateway_gwInc" isMarkerVisible="true">
-        <dc:Bounds x="1615" y="715" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1584" y="768" width="112" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_nomina_di" bpmnElement="Activity_nomina">
-        <dc:Bounds x="1720" y="580" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_merge2_di" bpmnElement="Gateway_merge2" isMarkerVisible="true">
-        <dc:Bounds x="1885" y="715" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_merge3_di" bpmnElement="Gateway_merge3" isMarkerVisible="true">
-        <dc:Bounds x="1985" y="715" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_conformar_di" bpmnElement="Activity_conformar">
-        <dc:Bounds x="2080" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_investigar_di" bpmnElement="Activity_investigar">
-        <dc:Bounds x="2080" y="460" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_gwGrave2_di" bpmnElement="Gateway_gwGrave2" isMarkerVisible="true">
-        <dc:Bounds x="2255" y="715" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2306" y="704" width="100" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_remitir_di" bpmnElement="Activity_remitir">
-        <dc:Bounds x="2360" y="820" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_evgw_di" bpmnElement="Gateway_evgw">
-        <dc:Bounds x="2515" y="835" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_concepto_di" bpmnElement="Event_concepto">
-        <dc:Bounds x="2602" y="962" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2655" y="994" width="87" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_sinResp_di" bpmnElement="Event_sinResp">
-        <dc:Bounds x="2602" y="842" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2568" y="826" width="105" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_revConcepto_di" bpmnElement="Activity_revConcepto">
-        <dc:Bounds x="2680" y="940" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_mergeA_di" bpmnElement="Gateway_mergeA" isMarkerVisible="true">
-        <dc:Bounds x="2845" y="835" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_merge4_di" bpmnElement="Gateway_merge4" isMarkerVisible="true">
-        <dc:Bounds x="2945" y="715" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_definir_di" bpmnElement="Activity_definir">
-        <dc:Bounds x="3040" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_mC_di" bpmnElement="Gateway_mC" isMarkerVisible="true">
-        <dc:Bounds x="3075" y="355" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_implementar_di" bpmnElement="Activity_implementar">
-        <dc:Bounds x="3200" y="340" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_verificar_di" bpmnElement="Activity_verificar">
-        <dc:Bounds x="3360" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_gwEfic_di" bpmnElement="Gateway_gwEfic" isMarkerVisible="true">
-        <dc:Bounds x="3525" y="715" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3497" y="768" width="106" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_matriz_di" bpmnElement="Activity_matriz">
-        <dc:Bounds x="3620" y="700" width="120" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_end_di" bpmnElement="EndEvent_end">
-        <dc:Bounds x="3782" y="722" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3754" y="761" width="93" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Data_dfurat_di" bpmnElement="Data_dfurat">
-        <dc:Bounds x="962" y="837" width="36" height="46" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="962" y="885" width="36" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Data_dsig_di" bpmnElement="Data_dsig">
-        <dc:Bounds x="3195" y="837" width="50" height="46" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3189" y="885" width="62" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TA_n1_di" bpmnElement="TA_n1">
-        <dc:Bounds x="1580" y="842" width="140" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TA_n3_di" bpmnElement="TA_n3">
-        <dc:Bounds x="2265" y="482" width="130" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1_start_informar_di" bpmnElement="Flow_1_start_informar">
-        <di:waypoint x="298" y="140" />
-        <di:waypoint x="340" y="140" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_2_informar_atender_di" bpmnElement="Flow_2_informar_atender">
-        <di:waypoint x="400" y="180" />
-        <di:waypoint x="400" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_3_atender_notificar_di" bpmnElement="Flow_3_atender_notificar">
-        <di:waypoint x="460" y="380" />
-        <di:waypoint x="500" y="380" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_4_notificar_clasificar_di" bpmnElement="Flow_4_notificar_clasificar">
-        <di:waypoint x="560" y="420" />
-        <di:waypoint x="560" y="700" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_5_clasificar_dmnRep_di" bpmnElement="Flow_5_clasificar_dmnRep">
-        <di:waypoint x="620" y="740" />
-        <di:waypoint x="660" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_6_dmnRep_gwAcc_di" bpmnElement="Flow_6_dmnRep_gwAcc">
-        <di:waypoint x="780" y="740" />
-        <di:waypoint x="825" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_7_gwAcc_furat_di" bpmnElement="Flow_7_gwAcc_furat">
-        <di:waypoint x="875" y="740" />
-        <di:waypoint x="920" y="740" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="881" y="724" width="11" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_8_furat_gwGrave1_di" bpmnElement="Flow_8_furat_gwGrave1">
-        <di:waypoint x="1040" y="740" />
-        <di:waypoint x="1085" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_9_gwGrave1_repMin_di" bpmnElement="Flow_9_gwGrave1_repMin">
-        <di:waypoint x="1110" y="765" />
-        <di:waypoint x="1110" y="860" />
-        <di:waypoint x="1180" y="860" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1115" y="770" width="11" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_10_gwGrave1_merge1_di" bpmnElement="Flow_10_gwGrave1_merge1">
-        <di:waypoint x="1135" y="740" />
-        <di:waypoint x="1345" y="740" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1141" y="724" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_11_repMin_merge1_di" bpmnElement="Flow_11_repMin_merge1">
-        <di:waypoint x="1300" y="860" />
-        <di:waypoint x="1370" y="860" />
-        <di:waypoint x="1370" y="765" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_12_merge1_repARL_di" bpmnElement="Flow_12_merge1_repARL">
-        <di:waypoint x="1395" y="740" />
-        <di:waypoint x="1440" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13_repARL_gwInc_di" bpmnElement="Flow_13_repARL_gwInc">
-        <di:waypoint x="1560" y="740" />
-        <di:waypoint x="1615" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_14_gwInc_nomina_di" bpmnElement="Flow_14_gwInc_nomina">
-        <di:waypoint x="1640" y="715" />
-        <di:waypoint x="1640" y="620" />
-        <di:waypoint x="1720" y="620" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1645" y="697" width="11" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15_gwInc_merge2_di" bpmnElement="Flow_15_gwInc_merge2">
-        <di:waypoint x="1665" y="740" />
-        <di:waypoint x="1885" y="740" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1671" y="724" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16_nomina_merge2_di" bpmnElement="Flow_16_nomina_merge2">
-        <di:waypoint x="1840" y="620" />
-        <di:waypoint x="1910" y="620" />
-        <di:waypoint x="1910" y="715" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17_merge2_merge3_di" bpmnElement="Flow_17_merge2_merge3">
-        <di:waypoint x="1935" y="740" />
-        <di:waypoint x="1985" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18_gwAcc_merge3_di" bpmnElement="Flow_18_gwAcc_merge3">
-        <di:waypoint x="850" y="715" />
-        <di:waypoint x="850" y="570" />
-        <di:waypoint x="2010" y="570" />
-        <di:waypoint x="2010" y="715" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="855" y="697" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_19_merge3_conformar_di" bpmnElement="Flow_19_merge3_conformar">
-        <di:waypoint x="2035" y="740" />
-        <di:waypoint x="2080" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_20_conformar_investigar_di" bpmnElement="Flow_20_conformar_investigar">
-        <di:waypoint x="2140" y="700" />
-        <di:waypoint x="2140" y="540" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_21_investigar_gwGrave2_di" bpmnElement="Flow_21_investigar_gwGrave2">
-        <di:waypoint x="2200" y="500" />
-        <di:waypoint x="2250" y="500" />
-        <di:waypoint x="2250" y="700" />
-        <di:waypoint x="2280" y="700" />
-        <di:waypoint x="2280" y="715" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_22_gwGrave2_remitir_di" bpmnElement="Flow_22_gwGrave2_remitir">
-        <di:waypoint x="2280" y="765" />
-        <di:waypoint x="2280" y="860" />
-        <di:waypoint x="2360" y="860" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2285" y="770" width="11" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_23_gwGrave2_merge4_di" bpmnElement="Flow_23_gwGrave2_merge4">
-        <di:waypoint x="2285" y="720" />
-        <di:waypoint x="2965" y="720" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2322" y="733" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_24_remitir_evgw_di" bpmnElement="Flow_24_remitir_evgw">
-        <di:waypoint x="2480" y="860" />
-        <di:waypoint x="2515" y="860" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_25_evgw_sinResp_di" bpmnElement="Flow_25_evgw_sinResp">
-        <di:waypoint x="2565" y="860" />
-        <di:waypoint x="2602" y="860" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_26_evgw_concepto_di" bpmnElement="Flow_26_evgw_concepto">
-        <di:waypoint x="2540" y="885" />
-        <di:waypoint x="2540" y="980" />
-        <di:waypoint x="2602" y="980" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_27_concepto_revConcepto_di" bpmnElement="Flow_27_concepto_revConcepto">
-        <di:waypoint x="2638" y="980" />
-        <di:waypoint x="2680" y="980" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_28_revConcepto_mergeA_di" bpmnElement="Flow_28_revConcepto_mergeA">
-        <di:waypoint x="2800" y="980" />
-        <di:waypoint x="2870" y="980" />
-        <di:waypoint x="2870" y="885" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_29_sinResp_mergeA_di" bpmnElement="Flow_29_sinResp_mergeA">
-        <di:waypoint x="2638" y="860" />
-        <di:waypoint x="2845" y="860" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_30_mergeA_merge4_di" bpmnElement="Flow_30_mergeA_merge4">
-        <di:waypoint x="2895" y="860" />
-        <di:waypoint x="2970" y="860" />
-        <di:waypoint x="2970" y="765" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_31_merge4_definir_di" bpmnElement="Flow_31_merge4_definir">
-        <di:waypoint x="2995" y="740" />
-        <di:waypoint x="3040" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_32_definir_mC_di" bpmnElement="Flow_32_definir_mC">
-        <di:waypoint x="3100" y="700" />
-        <di:waypoint x="3100" y="405" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_33_mC_implementar_di" bpmnElement="Flow_33_mC_implementar">
-        <di:waypoint x="3125" y="380" />
-        <di:waypoint x="3200" y="380" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_34_implementar_verificar_di" bpmnElement="Flow_34_implementar_verificar">
-        <di:waypoint x="3320" y="380" />
-        <di:waypoint x="3420" y="380" />
-        <di:waypoint x="3420" y="700" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_35_verificar_gwEfic_di" bpmnElement="Flow_35_verificar_gwEfic">
-        <di:waypoint x="3480" y="740" />
-        <di:waypoint x="3525" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_36_gwEfic_matriz_di" bpmnElement="Flow_36_gwEfic_matriz">
-        <di:waypoint x="3575" y="740" />
-        <di:waypoint x="3620" y="740" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3581" y="724" width="11" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_37_gwEfic_mC_di" bpmnElement="Flow_37_gwEfic_mC">
-        <di:waypoint x="3550" y="715" />
-        <di:waypoint x="3550" y="330" />
-        <di:waypoint x="3100" y="330" />
-        <di:waypoint x="3100" y="355" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3555" y="697" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_38_matriz_end_di" bpmnElement="Flow_38_matriz_end">
-        <di:waypoint x="3740" y="740" />
-        <di:waypoint x="3782" y="740" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Assoc_n1_di" bpmnElement="Assoc_n1">
-        <di:waypoint x="1550" y="780" />
-        <di:waypoint x="1628" y="842" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Assoc_n3_di" bpmnElement="Assoc_n3">
-        <di:waypoint x="2200" y="500" />
-        <di:waypoint x="2265" y="500" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Participant_min_di" bpmnElement="Participant_min" isHorizontal="true">
-        <dc:Bounds x="160" y="1070" width="1260" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_arl_di" bpmnElement="Participant_arl" isHorizontal="true">
-        <dc:Bounds x="1420" y="1070" width="2440" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="DOA_furat_dfurat_di" bpmnElement="DOA_furat_dfurat">
-        <di:waypoint x="980" y="780" />
-        <di:waypoint x="980" y="837" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DOA_definir_dsig_di" bpmnElement="DOA_definir_dsig">
-        <di:waypoint x="3140" y="780" />
-        <di:waypoint x="3197" y="837" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_1_di" bpmnElement="MessageFlow_1">
-        <di:waypoint x="1240" y="900" />
-        <di:waypoint x="1240" y="1070" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1246" y="1050" width="178" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_2_di" bpmnElement="MessageFlow_2">
-        <di:waypoint x="1500" y="780" />
-        <di:waypoint x="1500" y="1070" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1506" y="1050" width="36" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_3_di" bpmnElement="MessageFlow_3">
-        <di:waypoint x="2420" y="900" />
-        <di:waypoint x="2420" y="1070" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2454" y="1050" width="64" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="MessageFlow_4_di" bpmnElement="MessageFlow_4">
-        <di:waypoint x="2620" y="1070" />
-        <di:waypoint x="2620" y="998" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2655" y="1050" width="87" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="Diagram_Accidente"><bpmndi:BPMNPlane id="Plane_Accidente" bpmnElement="Collaboration_Accidente">
+    <bpmndi:BPMNShape id="Participant_main_di" bpmnElement="Participant_main" isHorizontal="true"><dc:Bounds x="20" y="20" width="3700" height="960" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_0_Trabajador_afectado_o_testigo_di" bpmnElement="Lane_0_Trabajador_afectado_o_testigo" isHorizontal="true"><dc:Bounds x="50" y="20" width="3670" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_1_Jefe_inmediato_Supervisor_de_sede_di" bpmnElement="Lane_1_Jefe_inmediato_Supervisor_de_sede" isHorizontal="true"><dc:Bounds x="50" y="140" width="3670" height="240" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_2_Equipo_investigador_di" bpmnElement="Lane_2_Equipo_investigador" isHorizontal="true"><dc:Bounds x="50" y="380" width="3670" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_3_Analista_de_nomina_di" bpmnElement="Lane_3_Analista_de_nomina" isHorizontal="true"><dc:Bounds x="50" y="500" width="3670" height="120" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_4_Coordinador_SST_di" bpmnElement="Lane_4_Coordinador_SST" isHorizontal="true"><dc:Bounds x="50" y="620" width="3670" height="360" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Participant_min_di" bpmnElement="Participant_min" isHorizontal="true"><dc:Bounds x="20" y="1010" width="1260" height="60" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Participant_arl_di" bpmnElement="Participant_arl" isHorizontal="true"><dc:Bounds x="1280" y="1010" width="2440" height="60" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="StartEvent_start_di" bpmnElement="StartEvent_start"><dc:Bounds x="122" y="62" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="82" y="101" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_informar_di" bpmnElement="Activity_informar"><dc:Bounds x="200" y="40" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_atender_di" bpmnElement="Activity_atender"><dc:Bounds x="200" y="280" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_notificar_di" bpmnElement="Activity_notificar"><dc:Bounds x="360" y="280" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_clasificar_di" bpmnElement="Activity_clasificar"><dc:Bounds x="360" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_dmnRep_di" bpmnElement="Activity_dmnRep"><dc:Bounds x="520" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwAcc_di" bpmnElement="Gateway_gwAcc" isMarkerVisible="true"><dc:Bounds x="685" y="655" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="652" y="708" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_furat_di" bpmnElement="Activity_furat"><dc:Bounds x="780" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwGrave1_di" bpmnElement="Gateway_gwGrave1" isMarkerVisible="true"><dc:Bounds x="945" y="655" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="912" y="639" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_repMin_di" bpmnElement="Activity_repMin"><dc:Bounds x="1040" y="760" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_merge1_di" bpmnElement="Gateway_merge1" isMarkerVisible="true"><dc:Bounds x="1205" y="655" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_repARL_di" bpmnElement="Activity_repARL"><dc:Bounds x="1300" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwInc_di" bpmnElement="Gateway_gwInc" isMarkerVisible="true"><dc:Bounds x="1475" y="655" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1442" y="708" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_nomina_di" bpmnElement="Activity_nomina"><dc:Bounds x="1580" y="520" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_merge2_di" bpmnElement="Gateway_merge2" isMarkerVisible="true"><dc:Bounds x="1745" y="655" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_merge3_di" bpmnElement="Gateway_merge3" isMarkerVisible="true"><dc:Bounds x="1845" y="655" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_conformar_di" bpmnElement="Activity_conformar"><dc:Bounds x="1940" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_investigar_di" bpmnElement="Activity_investigar"><dc:Bounds x="1940" y="400" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwGrave2_di" bpmnElement="Gateway_gwGrave2" isMarkerVisible="true"><dc:Bounds x="2115" y="655" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2158" y="644" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_remitir_di" bpmnElement="Activity_remitir"><dc:Bounds x="2220" y="760" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_evgw_di" bpmnElement="Gateway_evgw"><dc:Bounds x="2375" y="775" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_concepto_di" bpmnElement="Event_concepto"><dc:Bounds x="2462" y="902" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2500" y="934" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Event_sinResp_di" bpmnElement="Event_sinResp"><dc:Bounds x="2462" y="782" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2422" y="766" width="116" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_revConcepto_di" bpmnElement="Activity_revConcepto"><dc:Bounds x="2540" y="880" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mergeA_di" bpmnElement="Gateway_mergeA" isMarkerVisible="true"><dc:Bounds x="2705" y="775" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_merge4_di" bpmnElement="Gateway_merge4" isMarkerVisible="true"><dc:Bounds x="2805" y="655" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_definir_di" bpmnElement="Activity_definir"><dc:Bounds x="2900" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_mC_di" bpmnElement="Gateway_mC" isMarkerVisible="true"><dc:Bounds x="2935" y="295" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_implementar_di" bpmnElement="Activity_implementar"><dc:Bounds x="3060" y="280" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_verificar_di" bpmnElement="Activity_verificar"><dc:Bounds x="3220" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gateway_gwEfic_di" bpmnElement="Gateway_gwEfic" isMarkerVisible="true"><dc:Bounds x="3385" y="655" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="3352" y="708" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Activity_matriz_di" bpmnElement="Activity_matriz"><dc:Bounds x="3480" y="640" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="EndEvent_end_di" bpmnElement="EndEvent_end"><dc:Bounds x="3642" y="662" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="3602" y="701" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dfurat_di" bpmnElement="Data_dfurat"><dc:Bounds x="822" y="777" width="36" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="794" y="825" width="92" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Data_dsig_di" bpmnElement="Data_dsig"><dc:Bounds x="3055" y="777" width="50" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="3034" y="825" width="92" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="TA_n1_di" bpmnElement="TA_n1"><dc:Bounds x="1440" y="782" width="140" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="TA_n3_di" bpmnElement="TA_n3"><dc:Bounds x="2125" y="422" width="130" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="Flow_1_start_informar_di" bpmnElement="Flow_1_start_informar"><di:waypoint x="158" y="80" /><di:waypoint x="200" y="80" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_2_informar_atender_di" bpmnElement="Flow_2_informar_atender"><di:waypoint x="260" y="120" /><di:waypoint x="260" y="280" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_3_atender_notificar_di" bpmnElement="Flow_3_atender_notificar"><di:waypoint x="320" y="320" /><di:waypoint x="360" y="320" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_4_notificar_clasificar_di" bpmnElement="Flow_4_notificar_clasificar"><di:waypoint x="420" y="360" /><di:waypoint x="420" y="640" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_5_clasificar_dmnRep_di" bpmnElement="Flow_5_clasificar_dmnRep"><di:waypoint x="480" y="680" /><di:waypoint x="520" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_6_dmnRep_gwAcc_di" bpmnElement="Flow_6_dmnRep_gwAcc"><di:waypoint x="640" y="680" /><di:waypoint x="685" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_7_gwAcc_furat_di" bpmnElement="Flow_7_gwAcc_furat"><di:waypoint x="735" y="680" /><di:waypoint x="780" y="680" /><bpmndi:BPMNLabel><dc:Bounds x="741" y="664" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_8_furat_gwGrave1_di" bpmnElement="Flow_8_furat_gwGrave1"><di:waypoint x="900" y="680" /><di:waypoint x="945" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_9_gwGrave1_repMin_di" bpmnElement="Flow_9_gwGrave1_repMin"><di:waypoint x="970" y="705" /><di:waypoint x="970" y="800" /><di:waypoint x="1040" y="800" /><bpmndi:BPMNLabel><dc:Bounds x="975" y="710" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_10_gwGrave1_merge1_di" bpmnElement="Flow_10_gwGrave1_merge1"><di:waypoint x="995" y="680" /><di:waypoint x="1205" y="680" /><bpmndi:BPMNLabel><dc:Bounds x="1001" y="664" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_11_repMin_merge1_di" bpmnElement="Flow_11_repMin_merge1"><di:waypoint x="1160" y="800" /><di:waypoint x="1230" y="800" /><di:waypoint x="1230" y="705" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_12_merge1_repARL_di" bpmnElement="Flow_12_merge1_repARL"><di:waypoint x="1255" y="680" /><di:waypoint x="1300" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_13_repARL_gwInc_di" bpmnElement="Flow_13_repARL_gwInc"><di:waypoint x="1420" y="680" /><di:waypoint x="1475" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_14_gwInc_nomina_di" bpmnElement="Flow_14_gwInc_nomina"><di:waypoint x="1500" y="655" /><di:waypoint x="1500" y="560" /><di:waypoint x="1580" y="560" /><bpmndi:BPMNLabel><dc:Bounds x="1505" y="637" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_15_gwInc_merge2_di" bpmnElement="Flow_15_gwInc_merge2"><di:waypoint x="1525" y="680" /><di:waypoint x="1745" y="680" /><bpmndi:BPMNLabel><dc:Bounds x="1531" y="664" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_16_nomina_merge2_di" bpmnElement="Flow_16_nomina_merge2"><di:waypoint x="1700" y="560" /><di:waypoint x="1770" y="560" /><di:waypoint x="1770" y="655" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_17_merge2_merge3_di" bpmnElement="Flow_17_merge2_merge3"><di:waypoint x="1795" y="680" /><di:waypoint x="1845" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_18_gwAcc_merge3_di" bpmnElement="Flow_18_gwAcc_merge3"><di:waypoint x="710" y="655" /><di:waypoint x="710" y="510" /><di:waypoint x="1870" y="510" /><di:waypoint x="1870" y="655" /><bpmndi:BPMNLabel><dc:Bounds x="715" y="637" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_19_merge3_conformar_di" bpmnElement="Flow_19_merge3_conformar"><di:waypoint x="1895" y="680" /><di:waypoint x="1940" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_20_conformar_investigar_di" bpmnElement="Flow_20_conformar_investigar"><di:waypoint x="2000" y="640" /><di:waypoint x="2000" y="480" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_21_investigar_gwGrave2_di" bpmnElement="Flow_21_investigar_gwGrave2"><di:waypoint x="2060" y="440" /><di:waypoint x="2110" y="440" /><di:waypoint x="2110" y="640" /><di:waypoint x="2140" y="640" /><di:waypoint x="2140" y="655" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_22_gwGrave2_remitir_di" bpmnElement="Flow_22_gwGrave2_remitir"><di:waypoint x="2140" y="705" /><di:waypoint x="2140" y="800" /><di:waypoint x="2220" y="800" /><bpmndi:BPMNLabel><dc:Bounds x="2145" y="710" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_23_gwGrave2_merge4_di" bpmnElement="Flow_23_gwGrave2_merge4"><di:waypoint x="2165" y="680" /><di:waypoint x="2805" y="680" /><bpmndi:BPMNLabel><dc:Bounds x="2171" y="664" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_24_remitir_evgw_di" bpmnElement="Flow_24_remitir_evgw"><di:waypoint x="2340" y="800" /><di:waypoint x="2375" y="800" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_25_evgw_sinResp_di" bpmnElement="Flow_25_evgw_sinResp"><di:waypoint x="2425" y="800" /><di:waypoint x="2462" y="800" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_26_evgw_concepto_di" bpmnElement="Flow_26_evgw_concepto"><di:waypoint x="2400" y="825" /><di:waypoint x="2400" y="920" /><di:waypoint x="2462" y="920" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_27_concepto_revConcepto_di" bpmnElement="Flow_27_concepto_revConcepto"><di:waypoint x="2498" y="920" /><di:waypoint x="2540" y="920" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_28_revConcepto_mergeA_di" bpmnElement="Flow_28_revConcepto_mergeA"><di:waypoint x="2660" y="920" /><di:waypoint x="2730" y="920" /><di:waypoint x="2730" y="825" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_29_sinResp_mergeA_di" bpmnElement="Flow_29_sinResp_mergeA"><di:waypoint x="2498" y="800" /><di:waypoint x="2705" y="800" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_30_mergeA_merge4_di" bpmnElement="Flow_30_mergeA_merge4"><di:waypoint x="2755" y="800" /><di:waypoint x="2830" y="800" /><di:waypoint x="2830" y="705" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_31_merge4_definir_di" bpmnElement="Flow_31_merge4_definir"><di:waypoint x="2855" y="680" /><di:waypoint x="2900" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_32_definir_mC_di" bpmnElement="Flow_32_definir_mC"><di:waypoint x="2960" y="640" /><di:waypoint x="2960" y="345" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_33_mC_implementar_di" bpmnElement="Flow_33_mC_implementar"><di:waypoint x="2985" y="320" /><di:waypoint x="3060" y="320" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_34_implementar_verificar_di" bpmnElement="Flow_34_implementar_verificar"><di:waypoint x="3180" y="320" /><di:waypoint x="3280" y="320" /><di:waypoint x="3280" y="640" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_35_verificar_gwEfic_di" bpmnElement="Flow_35_verificar_gwEfic"><di:waypoint x="3340" y="680" /><di:waypoint x="3385" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_36_gwEfic_matriz_di" bpmnElement="Flow_36_gwEfic_matriz"><di:waypoint x="3435" y="680" /><di:waypoint x="3480" y="680" /><bpmndi:BPMNLabel><dc:Bounds x="3441" y="664" width="10" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_37_gwEfic_mC_di" bpmnElement="Flow_37_gwEfic_mC"><di:waypoint x="3410" y="655" /><di:waypoint x="3410" y="270" /><di:waypoint x="2960" y="270" /><di:waypoint x="2960" y="295" /><bpmndi:BPMNLabel><dc:Bounds x="3415" y="637" width="14" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Flow_38_matriz_end_di" bpmnElement="Flow_38_matriz_end"><di:waypoint x="3600" y="680" /><di:waypoint x="3642" y="680" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_1_di" bpmnElement="MessageFlow_1"><di:waypoint x="1100" y="840" /><di:waypoint x="1100" y="1010" /><bpmndi:BPMNLabel><dc:Bounds x="1106" y="990" width="178" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_2_di" bpmnElement="MessageFlow_2"><di:waypoint x="1360" y="720" /><di:waypoint x="1360" y="1010" /><bpmndi:BPMNLabel><dc:Bounds x="1366" y="990" width="35" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_3_di" bpmnElement="MessageFlow_3"><di:waypoint x="2280" y="840" /><di:waypoint x="2280" y="1010" /><bpmndi:BPMNLabel><dc:Bounds x="2286" y="990" width="119" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="MessageFlow_4_di" bpmnElement="MessageFlow_4"><di:waypoint x="2480" y="1010" /><di:waypoint x="2480" y="938" /><bpmndi:BPMNLabel><dc:Bounds x="2486" y="990" width="145" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DOA_furat_dfurat_di" bpmnElement="DOA_furat_dfurat"><di:waypoint x="840" y="720" /><di:waypoint x="840" y="777" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="DOA_definir_dsig_di" bpmnElement="DOA_definir_dsig"><di:waypoint x="3000" y="720" /><di:waypoint x="3057" y="777" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Assoc_n1_di" bpmnElement="Assoc_n1"><di:waypoint x="1410" y="720" /><di:waypoint x="1488" y="782" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="Assoc_n3_di" bpmnElement="Assoc_n3"><di:waypoint x="2060" y="440" /><di:waypoint x="2125" y="440" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
 </bpmn:definitions>

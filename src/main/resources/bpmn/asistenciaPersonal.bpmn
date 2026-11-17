@@ -115,7 +115,7 @@
       <bpmn:outgoing>Flow_15_gwNov_reg</bpmn:outgoing>
       <bpmn:outgoing>Flow_21_gwNov_mrg</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_reg" name="Registrar novedad en APP o planilla" camunda:delegateExpression="${registrarNovedadDelegate}">
+    <bpmn:serviceTask id="Activity_reg" name="Registrar novedad en APP o planilla" camunda:type="external" camunda:topic="registrarNovedad">
       <bpmn:incoming>Flow_15_gwNov_reg</bpmn:incoming>
       <bpmn:outgoing>Flow_16_reg_dmnNov</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DOA_reg_dapp"><bpmn:targetRef>Data_dapp</bpmn:targetRef></bpmn:dataOutputAssociation>
@@ -167,7 +167,7 @@
       <bpmn:outgoing>Flow_30_gwMes_cerrar</bpmn:outgoing>
       <bpmn:outgoing>Flow_31_gwMes_loop</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_cerrar" name="Cerrar prefactura mensual de novedades" camunda:delegateExpression="${cerrarPrefacturaDelegate}">
+    <bpmn:serviceTask id="Activity_cerrar" name="Cerrar prefactura mensual de novedades" camunda:type="external" camunda:topic="cerrarPrefactura">
       <bpmn:incoming>Flow_30_gwMes_cerrar</bpmn:incoming>
       <bpmn:outgoing>Flow_32_cerrar_split</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DOA_cerrar_dpre"><bpmn:targetRef>Data_dpre</bpmn:targetRef></bpmn:dataOutputAssociation>

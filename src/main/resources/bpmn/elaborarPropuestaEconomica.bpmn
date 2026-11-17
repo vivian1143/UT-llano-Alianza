@@ -21,7 +21,7 @@
       <bpmn:property id="Property_cost_0" name="__targetRef_placeholder" />
       <bpmn:dataInputAssociation id="DIA_cost_dsim"><bpmn:sourceRef>Data_dsim</bpmn:sourceRef><bpmn:targetRef>Property_cost_0</bpmn:targetRef></bpmn:dataInputAssociation>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_econ" name="Formular propuesta económica" camunda:delegateExpression="${formularPropuestaEconomicaDelegate}">
+    <bpmn:serviceTask id="Activity_econ" name="Formular propuesta económica" camunda:type="external" camunda:topic="formularPropuestaEconomica">
       <bpmn:incoming>Flow_2_cost_econ</bpmn:incoming>
       <bpmn:outgoing>Flow_3_econ_end</bpmn:outgoing>
     </bpmn:serviceTask>
