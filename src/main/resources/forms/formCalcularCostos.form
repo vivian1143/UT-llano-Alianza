@@ -43,7 +43,7 @@
       "validate": {
         "required": true
       },
-      "description": "En pesos, sin puntos. Ej: 1423500"
+      "description": "En pesos, sin puntos. No puede ser menor al salario mínimo 2026 (1750905)"
     },
     {
       "label": "Factor prestacional",

@@ -9,12 +9,32 @@
       }
     },
     {
+      "label": "ARL que respondió",
+      "type": "textfield",
+      "id": "Field_entidadArl",
+      "key": "entidadArl",
+      "layout": {
+        "row": "Row_1"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Calificación de la ARL",
+      "type": "textfield",
+      "id": "Field_calificacionArl",
+      "key": "calificacionArl",
+      "layout": {
+        "row": "Row_2"
+      },
+      "readonly": true
+    },
+    {
       "label": "Concepto de la ARL",
       "type": "textarea",
       "id": "Field_conceptoArl",
       "key": "conceptoArl",
       "layout": {
-        "row": "Row_1",
+        "row": "Row_3",
         "columns": null
       },
       "readonly": true
@@ -25,7 +45,7 @@
       "id": "Field_recomendacionesArl",
       "key": "recomendacionesArl",
       "layout": {
-        "row": "Row_2",
+        "row": "Row_4",
         "columns": null
       },
       "readonly": true
@@ -36,7 +56,7 @@
       "id": "Field_observacionesConcepto",
       "key": "observacionesConcepto",
       "layout": {
-        "row": "Row_3",
+        "row": "Row_5",
         "columns": null
       },
       "validate": {
