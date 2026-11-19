@@ -40,7 +40,7 @@
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
       <version>${camunda.version}</version>
     </dependency>
-    <!-- API REST: la usan los workers en JavaScript (carpeta workers-js) -->
+    <!-- API REST (/engine-rest): la usan los workers, el portal interno y el portal de la ARL -->
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
