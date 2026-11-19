@@ -1,6 +1,9 @@
 # UT-llano-Alianza
 Proyecto de Curso de Profundización Software 1
 
+Este repo es el motor: Camunda 7.24 en Spring Boot con los BPMN, DMN y forms, corre en el puerto 8080.
+La guía general del proyecto (cómo se conecta todo, cómo se instala, en qué orden se prende y las pruebas) está en el repo ut-llano-alianza-hub
+
 ## Integrantes
 - Laura Vanessa Hernandez Garcia 160004630
 - Vivian Andrea Prado Zuleta 160004632
@@ -36,7 +39,7 @@ Todos los archivos están en src/main/resources/ (carpetas bpmn/, dmn/ y forms/)
 - formIdentificarCausas.form
 - formInformeInvestigacion.form
 
-**Workers**(workers-js/src)
+**Workers**(ahora en un nuevo repo) 
 - accidente.js
 
 ## Proceso 2: Programar y Controlar Asistencia del Personal
@@ -64,7 +67,7 @@ Todos los archivos están en src/main/resources/ (carpetas bpmn/, dmn/ y forms/)
 - formRevisarHojasVida.form
 - formVincularPersonal.form
 
-**Workers**(workers-js/src)
+**Workers**(ahora en un nuevo repo) 
 - asistencia.js
 
 ## Proceso 3: Elaborar Propuesta
@@ -92,50 +95,32 @@ Todos los archivos están en src/main/resources/ (carpetas bpmn/, dmn/ y forms/)
 - formEntregarPropuesta.form
 - formCalcularCostos.form
 
-**Workers** (workers-js/src/)
+**Workers**(ahora en un nuevo repo) 
 - propuesta.js
 
 ---
 
 # Cambios para la entrega final
- 
-## Portal web
-**Responsable:** Laura Vanessa Hernandez Garcia
- 
-El portal es una aplicación aparte (carpeta portal-web, puerto 8081) que se comunica con Camunda solo por su API REST.
-Cada actor entra con su usuario, ve solo sus actividades pendientes y completa sus formularios.
-El usuario demo es el administrador y es el único que puede cancelar procesos.
- 
-**Usuarios** (la contraseña es igual al usuario)
-- Accidente: trabajador, supervisor, sst, investigador, nomina
-- Asistencia: coordinador, supervisor, gestionHumana, nomina, facturacion
-- Propuesta: legal, proyectos, financiera, gerencia
-- Administrador: demo
+
 ## Corrección de la retroalimentación
 **Responsable:** Vivian Andrea Prado Zuleta
  
 En la entrega anterior algunas tareas usaban JavaDelegate y fallaban en Camunda Run.
 Se cambiaron por External Tasks que hacen los workers en JavaScript, así los procesos funcionan en Camunda Run y en Spring Boot.
  
-Cambios en los BPMN (src/main/resources/bpmn/)
-- accidenteTrabajo.bpmn: la tarea Actualizar matriz de riesgos ahora es External Task
-- asistenciaPersonal.bpmn: las tareas Registrar novedad y Cerrar prefactura ahora son External Task
-- elaborarPropuestaEconomica.bpmn: la tarea Formular propuesta económica ahora es External Task
-Cambios en los workers (workers-js/src)
-- accidente.js: se agregó el worker actualizarMatrizRiesgos
-- asistencia.js: se agregaron los workers registrarNovedad y cerrarPrefactura
-- propuesta.js: se agregó el worker formularPropuestaEconomica
+- Los workers y el portal pasaron a sus propios repos (ut-llano-alianza-workers y ut-llano-alianza-portal-interno), este repo queda solo con el motor
+- formRevisarConceptoArl.form: ahora muestra qué ARL respondió y su calificación, que llegan desde el portal de la ARL
+- formCalcularCostos.form: el ejemplo del salario ahora es el mínimo 2026 porque el servicio de registros no deja poner salarios menores
 
 ---
 
 # Cómo ejecutar
-1. En la raíz del proyecto (donde está el pom.xml): mvn spring-boot:run
-2. En otra terminal colocar cd workers-js para ir a la carpeta, luego npm install(si no esta instalado) y npm start(para que empiece a escuchar el puerto) deben aparecer 13 mensajes "subscribed to topic"
-3. Para el portal, en IntelliJ abrir portal-web/src/main/java/com/utllanoalianza/portal/PortalApplication.java, dar click derecho y Run 'PortalApplication'. Esperar a que diga que arrancó en el puerto 8081
-4. Entrar al portal en http://localhost:8081 con el usuario de cada rol (la contraseña es igual al usuario)
-5. ambién se puede entrar a http://localhost:8080 con usuario demo y contraseña demo, abrir Tasklist y dar Start process
-6. En nuestro repositorio se encuentra el documento ut llano alianza.pdf el cual contiene el recorrido de los procesos con su visualizacion en el Tasklist de camunda
+1. En IntelliJ abrir src/main/java/com/utllanoalianza/bpm/Application.java, dar click derecho y Run 'Application'. También se puede con mvn spring-boot:run en la raíz del proyecto (donde está el pom.xml)
+2. Entrar a http://localhost:8080 con usuario demo y contraseña demo
+3. Lo demás (servicio de registros, workers, portal interno y portal de la ARL) se prende en el orden que dice el README del hub
+4. En nuestro repositorio se encuentra el documento ut llano alianza.pdf el cual contiene el recorrido de los procesos con su visualizacion en el Tasklist de camunda
 
+Al correr el proyecto se despliegan solos los BPMN, DMN y forms y se crean los usuarios de cada rol.
 Los procesos Investigar Accidente, Gestionar Personal Adicional y Elaborar Propuesta Económica aparecen en la lista pero son subprocesos (Call Activity) entonces los llama el proceso principal y no se inician a mano
 
-**Ejecución en Camunda Run:** se despliegan las carpetas bpmn, dmn y forms y se inician los workers (paso 2)
+**Ejecución en Camunda Run:** se despliegan las carpetas bpmn, dmn y forms, se crean los usuarios con node scripts/crearUsuarios.js del repo hub y se prenden los workers
